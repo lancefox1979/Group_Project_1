@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Shannon Fisher
  * 
  */
-public class Customer implements Serializable {
+public class Customer implements Serializable, IMatchable<String> {
 	private static final long serialVersionUID = 1L;
 	private static final String MEMBER_STRING = "C";
 	private String name;
@@ -76,6 +76,15 @@ public class Customer implements Serializable {
 	 */
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+
+	@Override
+	public boolean matches(String key) {
+		if (key.equals(key)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

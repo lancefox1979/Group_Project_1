@@ -21,6 +21,7 @@ public class Store implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Inventory inventory;
 	private CustomerList customerList;
+	private WasherList washerList;
 	private static Store store;
 
 	/**
@@ -30,6 +31,7 @@ public class Store implements Serializable {
 	private Store() {
 		inventory = Inventory.instance();
 		customerList = CustomerList.instance();
+		washerList = WasherList.instance();
 	}
 
 	/**
@@ -78,10 +80,45 @@ public class Store implements Serializable {
 	 */
 	public Washer addWasher(String brand, String model, double price) {
 		Washer washer = new Washer(brand, model, price);
-		if (inventory.insertWasher(washer)) {
+		if (washerList.insertWasher(washer)) {
 			return (washer);
 		}
 		return null;
+	}
+
+	/**
+	 * Organizes the operations for adding a washer to the inventory.
+	 * 
+	 * @param washer
+	 *            the washer to add to the inventory
+	 * @param quantity
+	 *            the number of washers to add
+	 * @return the Washer object created
+	 */
+	public boolean addWasherToInventory(Washer washer, int quantity) {
+		return inventory.insertWasher(washer, quantity);
+	}
+
+	/**
+	 * Organizes the operations for displaying all washers in the inventory.
+	 * 
+	 * @return ?
+	 */
+	public String listWashers() {
+		String result = "";
+
+		return result;
+	}
+
+	/**
+	 * Searches for a given washer.
+	 * 
+	 * @param washerId
+	 *            ID of the washer
+	 * @return true if the washer is in the washer collection
+	 */
+	public Washer searchWashers(String washerId) {
+		return washerList.search(washerId);
 	}
 
 	/**

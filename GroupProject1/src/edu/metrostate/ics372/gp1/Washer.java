@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Shannon Fisher
  * 
  */
-public class Washer implements Serializable {
+public class Washer implements Serializable, IMatchable<String> {
 	private static final long serialVersionUID = 1L;
 	private String brand;
 	private String model;
@@ -57,6 +57,15 @@ public class Washer implements Serializable {
 	 */
 	public double getPrice() {
 		return price;
+	}
+
+	@Override
+	public boolean matches(String key) {
+		if (key.equals(key)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**

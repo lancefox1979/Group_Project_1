@@ -8,7 +8,7 @@ package edu.metrostate.ics372.gp1;
  * @author Shannon Fisher
  * 
  */
-public class CustomerList extends ItemList<Customer> {
+public class CustomerList extends ItemList<Customer, String> {
 	private static final long serialVersionUID = 1L;
 	private static CustomerList customerList;
 

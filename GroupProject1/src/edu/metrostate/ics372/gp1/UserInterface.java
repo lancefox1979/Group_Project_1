@@ -20,7 +20,7 @@ public class UserInterface {
 	private static Store store;
 	private static final int EXIT = 0;
 	private static final int ADD_CUSTOMER = 1;
-	private static final int ADD_WASHER = 2;
+	private static final int ADD_MODEL = 2;
 	private static final int ADD_TO_INVENTORY = 3;
 	private static final int PURCHASE = 4;
 	private static final int LIST_CUSTOMERS = 5;
@@ -96,14 +96,34 @@ public class UserInterface {
 	}
 
 	/**
-	 * Converts the String to a number.
+	 * Converts the String to an integer.
+	 * 
+	 * @param prompt
+	 *            the String for prompting
+	 * @return the integer corresponding to the String.
+	 * 
+	 */
+	public int getInteger(String prompt) {
+		do {
+			try {
+				String item = getToken(prompt);
+				Integer number = Integer.valueOf(item);
+				return number.intValue();
+			} catch (NumberFormatException nfe) {
+				System.out.println("Please input a number.");
+			}
+		} while (true);
+	}
+
+	/**
+	 * Converts the String to a double.
 	 * 
 	 * @param prompt
 	 *            the String for prompting
 	 * @return the double corresponding to the String.
 	 * 
 	 */
-	public double getNumber(String prompt) {
+	public double getDouble(String prompt) {
 		do {
 			try {
 				String item = getToken(prompt);
@@ -142,7 +162,7 @@ public class UserInterface {
 		System.out.println("Enter a number between 0 and 9 as explained below: \n");
 		System.out.println("[" + EXIT + "] to Exit\n");
 		System.out.println("[" + ADD_CUSTOMER + "] Add a customer.");
-		System.out.println("[" + ADD_WASHER + "] Add a washer.");
+		System.out.println("[" + ADD_MODEL + "] Add a model.");
 		System.out.println("[" + ADD_TO_INVENTORY + "] Add a washer to inventory.");
 		System.out.println("[" + PURCHASE + "] Purchase a washer.");
 		System.out.println("[" + LIST_CUSTOMERS + "] Display all customers.");
@@ -180,7 +200,7 @@ public class UserInterface {
 		do {
 			String brand = getToken("Enter washer brand: ");
 			String model = getToken("Enter washer model: ");
-			double price = getNumber("Enter washer price: ");
+			double price = getDouble("Enter washer price: ");
 			result = store.addWasher(brand, model, price);
 			if (result != null) {
 				System.out.println(result);
@@ -197,7 +217,24 @@ public class UserInterface {
 	 * 
 	 */
 	public void addToInventory() {
-		// TODO: Implementation...
+		Washer washer;
+		String brand = getToken("Enter washer brand: ");
+		String model = getToken("Enter washer model: ");
+		String washerId = brand + model;
+		int quantity = getInteger("Enter quantity to add: ");
+		washer = store.searchWashers(washerId);
+		if (washer == null) {
+			System.out.println("No such washer exists.");
+			return;
+		}
+		do {
+			store.addWasherToInventory(washer, quantity);
+			if (washer != null) {
+				System.out.println("Added " + quantity + " of " + washer);
+			} else {
+				System.out.println("Washer could not be added to the inventory.");
+			}
+		} while (yesOrNo("Add more washers to the inventory?"));
 	}
 
 	/**
@@ -224,7 +261,7 @@ public class UserInterface {
 	 * 
 	 */
 	public void listWashers() {
-		// TODO: Implementation...
+		System.out.println(store.listWashers());
 	}
 
 	/**
@@ -258,7 +295,7 @@ public class UserInterface {
 			if (store == null) {
 				store = Store.retrieve();
 				if (store != null) {
-					System.out.println(" The store has been successfully retrieved from the file StoreData \n");
+					System.out.println(" The store has been successfully retrieved from the file StoreData. \n");
 				} else {
 					System.out.println("File doesnt exist; creating new store...");
 					store = Store.instance();
@@ -282,7 +319,7 @@ public class UserInterface {
 			case ADD_CUSTOMER:
 				addCustomer();
 				break;
-			case ADD_WASHER:
+			case ADD_MODEL:
 				addWasher();
 				break;
 			case ADD_TO_INVENTORY:

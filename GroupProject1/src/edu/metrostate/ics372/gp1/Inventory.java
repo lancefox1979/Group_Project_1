@@ -1,19 +1,20 @@
 package edu.metrostate.ics372.gp1;
 
 /**
- * The Inventory class is used to maintain a collection of washers.
+ * The Inventory class is used to maintain a collection of washers and their
+ * respective quantities currently in the inventory.
  * 
  * ICS372-01 - Group Project #1
  * 
  * @author Shannon Fisher
  * 
  */
-public class Inventory extends ItemList<Washer> {
+public class Inventory extends ItemList<Washer, String> {
 
 	private static final long serialVersionUID = 1L;
 	private static Inventory inventory;
 
-	// Private constructor for the singleton pattern
+	// Private constructor for the singleton pattern.
 	private Inventory() {
 	}
 
@@ -37,7 +38,7 @@ public class Inventory extends ItemList<Washer> {
 	 *            the washer to be inserted
 	 * @return true if the washer could be inserted
 	 */
-	public boolean insertWasher(Washer washer) {
-		return super.add(washer);
+	public boolean insertWasher(Washer washer, int quantity) {
+		return super.add(washer, quantity);
 	}
 }
