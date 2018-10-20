@@ -7,6 +7,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+/**
+ * The Store class is used for calling the primary business functions of the
+ * application. It keeps track of all customers and washers in the inventory.
+ * 
+ * ICS372-01 - Group Project #1
+ * 
+ * @author Shannon Fisher
+ * 
+ */
 public class Store implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Inventory inventory;

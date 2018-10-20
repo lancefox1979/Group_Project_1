@@ -4,6 +4,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
+/**
+ * The CustomerIdServer class is used for generating unique IDs for each
+ * customer.
+ * 
+ * ICS372-01 - Group Project #1
+ * 
+ * @author Shannon Fisher
+ * 
+ */
 public class CustomerIdServer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int idCounter;

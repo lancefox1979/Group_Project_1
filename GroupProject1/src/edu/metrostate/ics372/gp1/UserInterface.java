@@ -5,6 +5,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+/**
+ * The UserInterface class contains the main entry point, and provides end-users
+ * a means of interfacing with the application through the command-line.
+ * 
+ * ICS372-01 - Group Project #1
+ * 
+ * @author Shannon Fisher
+ * 
+ */
 public class UserInterface {
 	private static UserInterface userInterface;
 	private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

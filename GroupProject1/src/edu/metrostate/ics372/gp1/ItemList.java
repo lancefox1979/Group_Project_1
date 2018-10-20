@@ -4,6 +4,14 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * The ItemList class is a base class used to manage generic collections.
+ * 
+ * ICS372-01 - Group Project #1
+ * 
+ * @author Shannon Fisher
+ * 
+ */
 public class ItemList<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<T> list = new LinkedList<T>();

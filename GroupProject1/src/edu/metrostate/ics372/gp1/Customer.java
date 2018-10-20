@@ -2,6 +2,14 @@ package edu.metrostate.ics372.gp1;
 
 import java.io.Serializable;
 
+/**
+ * The Customer class is used to manage a single customer.
+ * 
+ * ICS372-01 - Group Project #1
+ * 
+ * @author Shannon Fisher
+ * 
+ */
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private static final String MEMBER_STRING = "C";
@@ -21,26 +29,6 @@ public class Customer implements Serializable {
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		id = MEMBER_STRING + (CustomerIdServer.instance()).getId();
-	}
-
-	/**
-	 * Setter for the customer's name.
-	 * 
-	 * @param name
-	 *            customer's new name
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * Setter for the customer's phone number.
-	 * 
-	 * @param phoneNumber
-	 *            customer's new phone number
-	 */
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
 	}
 
 	/**
@@ -68,6 +56,26 @@ public class Customer implements Serializable {
 	 */
 	public String getId() {
 		return id;
+	}
+
+	/**
+	 * Setter for the customer's name.
+	 * 
+	 * @param name
+	 *            customer's new name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Setter for the customer's phone number.
+	 * 
+	 * @param phoneNumber
+	 *            customer's new phone number
+	 */
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	/**

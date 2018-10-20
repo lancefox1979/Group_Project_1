@@ -1,5 +1,13 @@
 package edu.metrostate.ics372.gp1;
 
+/**
+ * The CustomerList class is used to maintain a collection of customers.
+ * 
+ * ICS372-01 - Group Project #1
+ * 
+ * @author Shannon Fisher
+ * 
+ */
 public class CustomerList extends ItemList<Customer> {
 	private static final long serialVersionUID = 1L;
 	private static CustomerList customerList;
