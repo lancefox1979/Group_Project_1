@@ -23,6 +23,7 @@ public class UserInterface {
 	/**
 	 * Made private for the singleton pattern. Conditionally looks for any saved
 	 * data. Otherwise, it gets a singleton Store object.
+	 * 
 	 */
 	private UserInterface() {
 		if (yesOrNo("Look for saved data and use it?")) {
@@ -36,6 +37,7 @@ public class UserInterface {
 	 * Supports the singleton pattern.
 	 * 
 	 * @return the singleton object
+	 * 
 	 */
 	public static UserInterface instance() {
 		if (userInterface == null) {
@@ -93,7 +95,7 @@ public class UserInterface {
 	public int getCommand() {
 		do {
 			try {
-				int value = Integer.parseInt(getToken("Enter command:" + HELP + " for help"));
+				int value = Integer.parseInt(getToken("Enter command [" + HELP + "] for help"));
 				if (value >= EXIT && value <= HELP) {
 					return value;
 				}
@@ -108,17 +110,95 @@ public class UserInterface {
 	 * 
 	 */
 	public void help() {
-		System.out.println("Enter a number between 0 and 12 as explained below:");
-		System.out.println(EXIT + " to Exit\n");
-		System.out.println(ADD_CUSTOMER + " to add a customer.");
-		System.out.println(ADD_WASHER + " to  add a washer.");
-		System.out.println(ADD_TO_INVENTORY + " to add a washer to the inventory.");
-		System.out.println(PURCHASE + " to purchase a washer.");
-		System.out.println(LIST_CUSTOMERS + " to display all customers.");
-		System.out.println(LIST_WASHERS + " to display all washers.");
-		System.out.println(DISPLAY_TOTAL + " to display total sales.");
-		System.out.println(SAVE + " to save data.");
-		System.out.println(HELP + " for help.");
+		System.out.println("Enter a number between 0 and 9 as explained below: \n");
+		System.out.println("[" + EXIT + "] to Exit\n");
+		System.out.println("[" + ADD_CUSTOMER + "] Add a customer.");
+		System.out.println("[" + ADD_WASHER + "] Add a washer.");
+		System.out.println("[" + ADD_TO_INVENTORY + "] Add a washer to inventory.");
+		System.out.println("[" + PURCHASE + "] Purchase a washer.");
+		System.out.println("[" + LIST_CUSTOMERS + "] Display all customers.");
+		System.out.println("[" + LIST_WASHERS + "] Display all washers.");
+		System.out.println("[" + DISPLAY_TOTAL + "] Display total sales.");
+		System.out.println("[" + SAVE + "] Save data.");
+		System.out.println("[" + HELP + "] Help menu.");
+	}
+
+	/**
+	 * Method to be called for adding a customer. Prompts the user for the
+	 * appropriate values and uses the appropriate Store method for adding the
+	 * customer.
+	 * 
+	 */
+	public void addCustomer() {
+		// TODO: Implementation...
+	}
+
+	/**
+	 * Method to be called for adding a washer. Prompts the user for the
+	 * appropriate values and uses the appropriate Store method for adding the
+	 * washer.
+	 * 
+	 */
+	public void addWasher() {
+		// TODO: Implementation...
+	}
+
+	/**
+	 * Method to be called for adding a washer to the inventory. Prompts the
+	 * user for the appropriate values and uses the appropriate Inventory method
+	 * for adding the washer.
+	 * 
+	 */
+	public void addToInventory() {
+		// TODO: Implementation...
+	}
+
+	/**
+	 * Method to be called for purchasing a washer. Prompts the user for the
+	 * appropriate values and uses the appropriate Store method for executing
+	 * the sale.
+	 * 
+	 */
+	public void purchase() {
+		// TODO: Implementation...
+	}
+
+	/**
+	 * Method to be called for displaying a list of all customers.
+	 * 
+	 */
+	public void listCustomers() {
+		// TODO: Implementation...
+	}
+
+	/**
+	 * Method to be called for displaying a list of all washers in the
+	 * inventory.
+	 * 
+	 */
+	public void listWashers() {
+		// TODO: Implementation...
+	}
+
+	/**
+	 * Method to be called for saving the Store object. Uses the appropriate
+	 * Store method for saving.
+	 * 
+	 */
+	private void save() {
+		if (Store.save()) {
+			System.out.println(" > The store has been successfully saved in the file StoreData.\n");
+		} else {
+			System.out.println(" > An error occurred during saving.\n");
+		}
+	}
+
+	/**
+	 * Method to be called for displaying the total washer sales.
+	 * 
+	 */
+	public void displayTotal() {
+		// TODO: Implementation...
 	}
 
 	/**
@@ -153,36 +233,28 @@ public class UserInterface {
 		while ((command = getCommand()) != EXIT) {
 			switch (command) {
 			case ADD_CUSTOMER:
-				// TODO: Implement method...
-				// addCustomer();
+				addCustomer();
 				break;
 			case ADD_WASHER:
-				// TODO: Implement method...
-				// addWasher();
+				addWasher();
 				break;
 			case ADD_TO_INVENTORY:
-				// TODO: Implement method...
-				// addToInventory();
+				addToInventory();
 				break;
 			case PURCHASE:
-				// TODO: Implement method...
-				// purchase();
+				purchase();
 				break;
 			case LIST_CUSTOMERS:
-				// TODO: Implement method...
-				// listCustomers();
+				listCustomers();
 				break;
 			case LIST_WASHERS:
-				// TODO: Implement method...
-				// listWashers();
+				listWashers();
 				break;
 			case DISPLAY_TOTAL:
-				// TODO: Implement method...
-				// displayTotal();
+				displayTotal();
 				break;
 			case SAVE:
-				// TODO: Implement method...
-				// save();
+				save();
 				break;
 			case HELP:
 				help();

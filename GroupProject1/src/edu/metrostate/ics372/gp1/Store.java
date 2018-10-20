@@ -1,8 +1,10 @@
 package edu.metrostate.ics372.gp1;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public class Store implements Serializable {
@@ -41,7 +43,7 @@ public class Store implements Serializable {
 	 */
 	public static Store retrieve() {
 		try {
-			FileInputStream file = new FileInputStream("LibraryData");
+			FileInputStream file = new FileInputStream("StoreData");
 			ObjectInputStream input = new ObjectInputStream(file);
 			store = (Store) input.readObject();
 			CustomerIdServer.retrieve(input);
@@ -53,5 +55,33 @@ public class Store implements Serializable {
 			cnfe.printStackTrace();
 			return null;
 		}
+	}
+
+	/**
+	 * Serializes the Store object.
+	 * 
+	 * @return true if the data could be saved
+	 */
+	public static boolean save() {
+		try {
+			FileOutputStream file = new FileOutputStream("StoreData");
+			ObjectOutputStream output = new ObjectOutputStream(file);
+			output.writeObject(store);
+			output.writeObject(CustomerIdServer.instance());
+			file.close();
+			return true;
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * String form of the Store.
+	 * 
+	 */
+	@Override
+	public String toString() {
+		return inventory + "\n" + customerList;
 	}
 }
