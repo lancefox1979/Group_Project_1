@@ -9,7 +9,8 @@ import java.io.Serializable;
 
 /**
  * The Store class is used for calling the primary business functions of the
- * application. It keeps track of all customers and washers in the inventory.
+ * application. It keeps track of all customers, back orders, and washers in the
+ * inventory.
  * 
  * ICS372-01 - Group Project #1
  * 
@@ -46,20 +47,39 @@ public class Store implements Serializable {
 	}
 
 	/**
-	 * Organizes the operations for adding a member
+	 * Organizes the operations for adding a customer.
 	 * 
 	 * @param name
-	 *            member name
+	 *            customer name
 	 * @param address
-	 *            member address
+	 *            customer address
 	 * @param phone
-	 *            member phone
-	 * @return the Member object created
+	 *            customer phone
+	 * @return the Customer object created
 	 */
 	public Customer addCustomer(String name, String phoneNumber) {
 		Customer customer = new Customer(name, phoneNumber);
 		if (customerList.insertCustomer(customer)) {
 			return (customer);
+		}
+		return null;
+	}
+
+	/**
+	 * Organizes the operations for adding a washer.
+	 * 
+	 * @param brand
+	 *            washer brand
+	 * @param model
+	 *            washer model
+	 * @param price
+	 *            washer price
+	 * @return the Washer object created
+	 */
+	public Washer addWasher(String brand, String model, double price) {
+		Washer washer = new Washer(brand, model, price);
+		if (inventory.insertWasher(washer)) {
+			return (washer);
 		}
 		return null;
 	}

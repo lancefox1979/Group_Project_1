@@ -96,6 +96,26 @@ public class UserInterface {
 	}
 
 	/**
+	 * Converts the String to a number.
+	 * 
+	 * @param prompt
+	 *            the String for prompting
+	 * @return the double corresponding to the String.
+	 * 
+	 */
+	public double getNumber(String prompt) {
+		do {
+			try {
+				String item = getToken(prompt);
+				Double number = Double.valueOf(item);
+				return number.doubleValue();
+			} catch (NumberFormatException nfe) {
+				System.out.println("Please input a number.");
+			}
+		} while (true);
+	}
+
+	/**
 	 * Prompts for a command from the keyboard
 	 * 
 	 * @return a valid command
@@ -156,7 +176,18 @@ public class UserInterface {
 	 * 
 	 */
 	public void addWasher() {
-		// TODO: Implementation...
+		Washer result;
+		do {
+			String brand = getToken("Enter washer brand: ");
+			String model = getToken("Enter washer model: ");
+			double price = getNumber("Enter washer price: ");
+			result = store.addWasher(brand, model, price);
+			if (result != null) {
+				System.out.println(result);
+			} else {
+				System.out.println("Washer could not be added.");
+			}
+		} while (yesOrNo("Add more washers?"));
 	}
 
 	/**

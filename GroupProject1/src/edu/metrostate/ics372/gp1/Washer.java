@@ -1,5 +1,7 @@
 package edu.metrostate.ics372.gp1;
 
+import java.io.Serializable;
+
 /**
  * The Washer class is used to manage a single washer.
  * 
@@ -8,7 +10,8 @@ package edu.metrostate.ics372.gp1;
  * @author Shannon Fisher
  * 
  */
-public class Washer {
+public class Washer implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private String brand;
 	private String model;
 	private double price;
@@ -54,5 +57,14 @@ public class Washer {
 	 */
 	public double getPrice() {
 		return price;
+	}
+
+	/**
+	 * String form of the washer.
+	 * 
+	 */
+	@Override
+	public String toString() {
+		return "Washer brand: " + brand + ", model: " + model + ", price: " + price + ".";
 	}
 }

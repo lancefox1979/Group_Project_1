@@ -18,9 +18,7 @@ public class CustomerIdServer implements Serializable {
 	private int idCounter;
 	private static CustomerIdServer server;
 
-	/*
-	 * Private constructor for singleton pattern
-	 */
+	// Private constructor for singleton pattern.
 	private CustomerIdServer() {
 		idCounter = 1;
 	}
@@ -39,7 +37,7 @@ public class CustomerIdServer implements Serializable {
 	}
 
 	/**
-	 * Getter for id
+	 * Getter for ID.
 	 * 
 	 * @return id of the member
 	 */
@@ -48,16 +46,16 @@ public class CustomerIdServer implements Serializable {
 	}
 
 	/**
-	 * String form of the collection
+	 * String form of the collection.
 	 * 
 	 */
 	@Override
 	public String toString() {
-		return ("IdServer" + idCounter);
+		return ("IdServer: " + idCounter);
 	}
 
 	/**
-	 * Retrieves the server object
+	 * Retrieves the server object.
 	 * 
 	 * @param input
 	 *            input stream for deserialization
