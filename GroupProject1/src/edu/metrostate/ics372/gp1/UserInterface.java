@@ -130,7 +130,14 @@ public class UserInterface {
 	 * 
 	 */
 	public void addCustomer() {
-		// TODO: Implementation...
+		String name = getToken("Enter the customer's name: ");
+		String phoneNumber = getToken("Enter the phone number: ");
+		Customer result;
+		result = store.addCustomer(name, phoneNumber);
+		if (result == null) {
+			System.out.println("Could not add customer.");
+		}
+		System.out.println(result);
 	}
 
 	/**
@@ -261,6 +268,7 @@ public class UserInterface {
 				break;
 			}
 		}
+		System.out.println("Goodbye.");
 	}
 
 	/**

@@ -1,15 +1,15 @@
 package edu.metrostate.ics372.gp1;
 
-public class CustomerList {
-
+public class CustomerList extends ItemList<Customer> {
+	private static final long serialVersionUID = 1L;
 	private static CustomerList customerList;
 
-	// Private constructor for singleton pattern
+	// Private constructor for singleton pattern.
 	private CustomerList() {
 	}
 
 	/**
-	 * Supports the singleton pattern
+	 * Supports the singleton pattern.
 	 * 
 	 * @return the singleton object
 	 */
@@ -19,5 +19,16 @@ public class CustomerList {
 		} else {
 			return customerList;
 		}
+	}
+
+	/**
+	 * Inserts a customer into the collection.
+	 * 
+	 * @param customer
+	 *            the customer to be inserted
+	 * @return true if the customer could be inserted
+	 */
+	public boolean insertCustomer(Customer customer) {
+		return super.add(customer);
 	}
 }

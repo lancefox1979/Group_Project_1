@@ -37,6 +37,25 @@ public class Store implements Serializable {
 	}
 
 	/**
+	 * Organizes the operations for adding a member
+	 * 
+	 * @param name
+	 *            member name
+	 * @param address
+	 *            member address
+	 * @param phone
+	 *            member phone
+	 * @return the Member object created
+	 */
+	public Customer addCustomer(String name, String phoneNumber) {
+		Customer customer = new Customer(name, phoneNumber);
+		if (customerList.insertCustomer(customer)) {
+			return (customer);
+		}
+		return null;
+	}
+
+	/**
 	 * Retrieves a deserialized version of the Store from disk.
 	 * 
 	 * @return a Store object
