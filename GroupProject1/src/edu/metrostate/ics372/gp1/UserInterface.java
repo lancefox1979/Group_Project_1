@@ -155,7 +155,7 @@ public class UserInterface {
 	}
 
 	/**
-	 * Displays the help screen
+	 * Displays the help screen.
 	 * 
 	 */
 	public void help() {
@@ -248,11 +248,11 @@ public class UserInterface {
 	}
 
 	/**
-	 * Method to be called for displaying a list of all customers.
+	 * Method to be called for displaying a list of all customers in the system.
 	 * 
 	 */
 	public void listCustomers() {
-		// TODO: Implementation...
+		System.out.println(store.listCustomers());
 	}
 
 	/**

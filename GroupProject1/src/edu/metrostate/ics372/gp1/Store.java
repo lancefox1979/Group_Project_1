@@ -104,14 +104,21 @@ public class Store implements Serializable {
 	}
 
 	/**
+	 * Organizes the operations for displaying all customers in the system.
+	 * 
+	 * @return a list of all customers in the system
+	 */
+	public String listCustomers() {
+		return customerList.toString();
+	}
+
+	/**
 	 * Organizes the operations for displaying all washers in the inventory.
 	 * 
-	 * @return ?
+	 * @return a list of all washers in the inventory
 	 */
 	public String listWashers() {
-		String result = "";
-
-		return result;
+		return inventory.getAllWashers();
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package edu.metrostate.ics372.gp1;
 
+import java.util.Iterator;
+
 /**
  * The CustomerList class is used to maintain a collection of customers.
  * 
@@ -38,5 +40,19 @@ public class CustomerList extends ItemList<Customer, String> {
 	 */
 	public boolean insertCustomer(Customer customer) {
 		return super.add(customer);
+	}
+
+	/**
+	 * String form of the CustomerList.
+	 * 
+	 */
+	@Override
+	public String toString() {
+		StringBuilder stringBuilder = new StringBuilder();
+		Iterator<Customer> customers = this.iterator();
+		while (customers.hasNext()) {
+			stringBuilder.append(customers.next() + "\n");
+		}
+		return stringBuilder.toString();
 	}
 }

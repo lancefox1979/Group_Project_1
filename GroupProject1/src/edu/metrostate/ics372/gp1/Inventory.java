@@ -41,4 +41,14 @@ public class Inventory extends ItemList<Washer, String> {
 	public boolean insertWasher(Washer washer, int quantity) {
 		return super.add(washer, quantity);
 	}
+
+	/**
+	 * Returns all washers and their quantities currently in the inventory.
+	 * 
+	 * @return all washers in the inventory
+	 */
+	public String getAllWashers() {
+		// TODO: Implementation required.
+		return "";
+	}
 }

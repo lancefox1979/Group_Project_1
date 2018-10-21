@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * The BackOrder class represents an order for a specific customer that has been
- * put on hold until the required quanity of washers for the sale are in the
+ * put on hold until the required quantity of washers for the sale are in the
  * inventory.
  * 
  * ICS372-01 - Group Project #1
