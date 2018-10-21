@@ -61,7 +61,7 @@ public class Washer implements Serializable, IMatchable<String> {
 
 	@Override
 	public boolean matches(String key) {
-		if (key.equals(key)) {
+		if ((this.brand + this.model).equals(key)) {
 			return true;
 		} else {
 			return false;

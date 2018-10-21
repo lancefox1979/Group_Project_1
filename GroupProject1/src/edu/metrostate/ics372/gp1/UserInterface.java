@@ -218,15 +218,15 @@ public class UserInterface {
 	 */
 	public void addToInventory() {
 		Washer washer;
+		int quantity = 0;
 		String brand = getToken("Enter washer brand: ");
 		String model = getToken("Enter washer model: ");
-		String washerId = brand + model;
-		int quantity = getInteger("Enter quantity to add: ");
-		washer = store.searchWashers(washerId);
+		washer = store.searchWashers(brand + model);
 		if (washer == null) {
 			System.out.println("No such washer exists.");
 			return;
 		}
+		quantity = getInteger("Enter quantity to add: ");
 		do {
 			store.addWasherToInventory(washer, quantity);
 			if (washer != null) {
