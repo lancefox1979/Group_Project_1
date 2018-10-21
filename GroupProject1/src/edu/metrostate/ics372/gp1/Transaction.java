@@ -4,6 +4,14 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/**
+ * The Transaction class is used to manage a single transaction for a washer.
+ * 
+ * ICS372-01 - Group Project #1
+ * 
+ * @author Shannon Fisher
+ * 
+ */
 public class Transaction implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String type;
