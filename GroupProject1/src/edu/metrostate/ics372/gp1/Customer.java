@@ -1,6 +1,9 @@
 package edu.metrostate.ics372.gp1;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * The Customer class is used to manage a single customer.
@@ -16,6 +19,9 @@ public class Customer implements Serializable, IMatchable<String> {
 	private String name;
 	private String phoneNumber;
 	private String id;
+	private List<Washer> washersSold = new LinkedList<Washer>();
+	private List<BackOrder> washersOnBackOrder = new LinkedList<BackOrder>();
+	private List<Transaction> transactions = new LinkedList<Transaction>();
 
 	/**
 	 * Represents a single customer.
@@ -78,9 +84,55 @@ public class Customer implements Serializable, IMatchable<String> {
 		this.phoneNumber = phoneNumber;
 	}
 
+	/**
+	 * Stores the washer as purchased for this customer.
+	 * 
+	 * @param washer
+	 *            the washer to be sold
+	 * @return true if the washer could be marked as sold
+	 */
+	public boolean purchase(Washer washer) {
+		if (washersSold.add(washer)) {
+			transactions.add(new Transaction("Washer sold: ", washer.getId()));
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Places a back order for the washer.
+	 * 
+	 * @param hold
+	 *            the washer to be placed on back order
+	 */
+	public void placeBackOrder(BackOrder backOrder) {
+		transactions.add(new Transaction("Back order placed: ", backOrder.getWasher().getId()));
+		washersOnBackOrder.add(backOrder);
+	}
+
+	/**
+	 * Removes a back order.
+	 * 
+	 * @param washerId
+	 *            the washer ID for removing a back order
+	 * @return true if the back order could be removed
+	 */
+	public boolean removeBackOrder(String washerId) {
+		for (ListIterator<BackOrder> iterator = washersOnBackOrder.listIterator(); iterator.hasNext();) {
+			BackOrder backOrder = (BackOrder) iterator.next();
+			String id = backOrder.getWasher().getId();
+			if (id.equals(washerId)) {
+				transactions.add(new Transaction("Back order removed: ", backOrder.getWasher().getId()));
+				iterator.remove();
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public boolean matches(String key) {
-		if (key.equals(key)) {
+		if (this.id.equals(key)) {
 			return true;
 		} else {
 			return false;

@@ -76,7 +76,7 @@ public class Store implements Serializable {
 	 *            washer model
 	 * @param price
 	 *            washer price
-	 * @return the Washer object created
+	 * @return true if the washer model and brand could be added
 	 */
 	public Washer addWasher(String brand, String model, double price) {
 		Washer washer = new Washer(brand, model, price);
@@ -93,10 +93,14 @@ public class Store implements Serializable {
 	 *            the washer to add to the inventory
 	 * @param quantity
 	 *            the number of washers to add
-	 * @return the Washer object created
+	 * @return true if the washer could be added to the inventory
 	 */
 	public boolean addWasherToInventory(Washer washer, int quantity) {
-		return inventory.insertWasher(washer, quantity);
+		boolean result = inventory.insertWasher(washer, quantity);
+		if (result) {
+			processBackOrders(washer.getId());
+		}
+		return result;
 	}
 
 	/**
@@ -108,6 +112,27 @@ public class Store implements Serializable {
 		String result = "";
 
 		return result;
+	}
+
+	/**
+	 * Processes back orders for a single washer.
+	 * 
+	 * @param washerId
+	 *            id of the washer
+	 * @return the customer who should be notified the order has been fulfilled
+	 */
+	public Customer processBackOrders(String washerId) {
+		Washer washer = inventory.search(washerId);
+		if (washer == null) {
+			return (null);
+		}
+		BackOrder backOrder = washer.getNextBackOrder();
+		if (backOrder == null) {
+			return (null);
+		}
+		backOrder.getCustomer().removeBackOrder(washerId);
+		backOrder.getWasher().removeBackOrder(backOrder.getCustomer().getId());
+		return (backOrder.getCustomer());
 	}
 
 	/**

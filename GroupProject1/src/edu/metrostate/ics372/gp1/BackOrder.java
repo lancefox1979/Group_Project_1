@@ -16,7 +16,6 @@ public class BackOrder implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Customer customer;
 	private Washer washer;
-	private int quantity;
 
 	/**
 	 * The customer and washer are stored, along with the requested quantity.
@@ -28,9 +27,26 @@ public class BackOrder implements Serializable {
 	 * @param quantity
 	 *            the number of washers requested for purchase
 	 */
-	public BackOrder(Customer customer, Washer washer, int quantity) {
+	public BackOrder(Customer customer, Washer washer) {
 		this.customer = customer;
 		this.washer = washer;
-		this.quantity = quantity;
+	}
+
+	/**
+	 * Getter for the customer.
+	 * 
+	 * @return customer of this back order
+	 */
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	/**
+	 * Getter for the washer.
+	 * 
+	 * @return washer of this back order
+	 */
+	public Washer getWasher() {
+		return washer;
 	}
 }
