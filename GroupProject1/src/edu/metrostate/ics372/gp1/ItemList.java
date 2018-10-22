@@ -60,7 +60,7 @@ public class ItemList<T extends IMatchable<K>, K> implements Serializable {
 	public boolean add(T item, int quantity) {
 		List<T> manyItems = new LinkedList<T>();
 		for (int i = 0; i < quantity; i++) {
-			manyItems.add(list.size(), item);
+			manyItems.add(item);
 		}
 		return list.addAll(manyItems);
 	}

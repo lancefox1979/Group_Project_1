@@ -218,22 +218,18 @@ public class UserInterface {
 	 */
 	public void addToInventory() {
 		Washer washer;
-		int quantity = 0;
-		String brand = getToken("Enter washer brand: ");
-		String model = getToken("Enter washer model: ");
-		washer = store.searchWashers(brand + model);
-		if (washer == null) {
-			System.out.println("No such washer exists.");
-			return;
-		}
-		quantity = getInteger("Enter quantity to add: ");
 		do {
-			store.addWasherToInventory(washer, quantity);
-			if (washer != null) {
-				System.out.println("Added " + quantity + " of " + washer);
-			} else {
-				System.out.println("Washer could not be added to the inventory.");
+			int quantity = 0;
+			String brand = getToken("Enter washer brand: ");
+			String model = getToken("Enter washer model: ");
+			washer = store.searchWashers(brand + model);
+			if (washer == null) {
+				System.out.println("No such washer exists.");
+				return;
 			}
+			quantity = getInteger("Enter quantity to add: ");
+			store.addWasherToInventory(washer, quantity);
+			System.out.println("Added " + quantity + " of " + washer);
 		} while (yesOrNo("Add more washers to the inventory?"));
 	}
 
@@ -243,8 +239,21 @@ public class UserInterface {
 	 * the sale.
 	 * 
 	 */
+	/*Purchase: The actor identifies the washer by its brand and model names and the
+	customer by the customer id. The actor enters the quantity as well. If there is
+	enough on stock, the purchase is immediate. Otherwise, this goes on back order.*/
 	public void purchase() {
-		// TODO: Implementation...
+		do {
+			String id = getToken("Enter customer id: ");
+			String brand = getToken("Enter washer brand: ");
+			String model = getToken("Enter washer model: ");
+			int quantity = getInteger("Enter quantity to purchase: ");
+			boolean purchased = store.purchaseWasher(id, brand, model, quantity);
+			if(purchased)
+				System.out.println("Purchased " + quantity + " of " + brand + " " + model + " for customer " + id);
+			else
+				System.out.println("Purchase unsuccessful.");
+		} while (yesOrNo("Make another Purchase?"));
 	}
 
 	/**
@@ -296,8 +305,7 @@ public class UserInterface {
 				store = Store.retrieve();
 				if (store != null) {
 					System.out.println(" The store has been successfully retrieved from the file StoreData. \n");
-				} else {
-					System.out.println("File doesnt exist; creating new store...");
+				} else {	
 					store = Store.instance();
 				}
 			}

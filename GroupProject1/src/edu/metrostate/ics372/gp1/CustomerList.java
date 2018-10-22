@@ -41,6 +41,17 @@ public class CustomerList extends ItemList<Customer, String> {
 	public boolean insertCustomer(Customer customer) {
 		return super.add(customer);
 	}
+	
+	/**
+	 * Finds a customer from the collection.
+	 * 
+	 * @param customer id
+	 *            the customer id be searched for
+	 * @return true if the customer was found
+	 */
+	public boolean findUser(String customerID, CustomerList list) {
+		return (list.search(customerID) != null);
+	}
 
 	/**
 	 * String form of the CustomerList.

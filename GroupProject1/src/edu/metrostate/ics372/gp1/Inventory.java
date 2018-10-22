@@ -1,5 +1,7 @@
 package edu.metrostate.ics372.gp1;
 
+import java.util.Iterator;
+
 /**
  * The Inventory class is used to maintain a collection of washers and their
  * respective quantities currently in the inventory.
@@ -41,6 +43,54 @@ public class Inventory extends ItemList<Washer, String> {
 	public boolean insertWasher(Washer washer, int quantity) {
 		return super.add(washer, quantity);
 	}
+	
+	/**
+	 * Updates the quantity of a washer for a specified quantity.
+	 * 
+	 * @param brand
+	 *            the washer brand
+	 * @param model
+	 * 			  the washer model
+	 * @param quantity
+	 * 			  quantity to remove
+	 */
+	public void updateQuantity(String brand, String model, int quantity) {
+		Iterator<Washer> washers = this.iterator();
+		while (washers.hasNext()) {
+			Washer washer = washers.next();
+			if(washer.matches(brand+model) && (quantity != 0))
+			{
+				washers.remove();
+				quantity--;
+			}
+		}
+	}
+	
+	/**
+	 * Finds a washer from the collection.
+	 * 
+	 * @param brand
+	 *            the washer brand
+	 * @param model
+	 * 			  the washer model
+	 * @param quantity
+	 * 			  quantity desired to purchase
+	 * @return true if the washer was found with quantity met
+	 */
+	public boolean findWasher(String brand, String model, int quantity) {
+		Iterator<Washer> washers = this.iterator();
+		boolean found = false;
+		int count = 0;
+		while (washers.hasNext()) {
+			Washer washer = washers.next();
+			if(washer.matches(brand+model))
+				count++;
+		}
+		
+		if(count >= quantity)
+			found = true;
+		return found;
+	}
 
 	/**
 	 * Returns all washers and their quantities currently in the inventory.
@@ -48,7 +98,11 @@ public class Inventory extends ItemList<Washer, String> {
 	 * @return all washers in the inventory
 	 */
 	public String getAllWashers() {
-		// TODO: Implementation required.
-		return "";
+		StringBuilder stringBuilder = new StringBuilder();
+		Iterator<Washer> washers = this.iterator();
+		while (washers.hasNext()) {
+			stringBuilder.append(washers.next() + "\n");
+		}
+		return stringBuilder.toString();
 	}
 }

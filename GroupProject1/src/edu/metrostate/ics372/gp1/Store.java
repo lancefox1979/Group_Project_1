@@ -102,6 +102,25 @@ public class Store implements Serializable {
 		}
 		return result;
 	}
+	
+	
+	public boolean purchaseWasher(String id, String brand, String model, int quantity) {
+		boolean purchase = customerList.findUser(id,customerList);
+		if(purchase)
+		{
+			purchase = inventory.findWasher(brand, model, quantity);
+			if(purchase)
+			{
+				inventory.updateQuantity(brand, model, quantity);
+			} else {
+				System.out.println("Not enough of " + brand + " " + model + " in stock. Back order placed.");
+			}
+		} else {
+			System.out.println("Invalid Customer ID.");
+		}
+		
+		return purchase;
+	}
 
 	/**
 	 * Organizes the operations for displaying all customers in the system.
@@ -166,7 +185,8 @@ public class Store implements Serializable {
 			CustomerIdServer.retrieve(input);
 			return store;
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			//ioe.printStackTrace();
+			System.out.println("File doesnt exist; creating new store...");
 			return null;
 		} catch (ClassNotFoundException cnfe) {
 			cnfe.printStackTrace();
