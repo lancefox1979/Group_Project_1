@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Iterator;
 
 /**
  * The Store class is used for calling the primary business functions of the
@@ -111,7 +112,24 @@ public class Store implements Serializable {
 			purchase = inventory.findWasher(brand, model, quantity);
 			if(purchase)
 			{
+				//I couldn't think of a way to get customer info and make a purchase from inventory so I just made it remove quantity from inv
+				Iterator<Customer> customers = customerList.iterator();
+				int count = quantity;
+				while (customers.hasNext()) {
+					Customer customer = customers.next();
+					if(customer.matches(id) && (count != 0))
+					{	
+						Iterator<Washer> washers = washerList.iterator();
+						while (washers.hasNext()) {
+							Washer washer = washers.next();
+							if(washer.matches(brand+model))
+								customer.purchase(washer);
+						}
+						quantity--;
+					}
+				}
 				inventory.updateQuantity(brand, model, quantity);
+				
 			} else {
 				System.out.println("Not enough of " + brand + " " + model + " in stock. Back order placed.");
 			}
