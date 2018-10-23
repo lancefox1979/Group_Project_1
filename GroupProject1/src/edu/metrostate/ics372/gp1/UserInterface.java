@@ -251,10 +251,11 @@ public class UserInterface {
 			String model = getToken("Enter washer model: ");
 			int quantity = getInteger("Enter quantity to purchase: ");
 			boolean purchased = store.purchaseWasher(id, brand, model, quantity);
-			if (purchased)
+			if (purchased) {
 				System.out.println("Purchased " + quantity + " of " + brand + " " + model + " for customer " + id);
-			else
+			} else {
 				System.out.println("Purchase unsuccessful.");
+			}
 		} while (yesOrNo("Make another Purchase?"));
 	}
 

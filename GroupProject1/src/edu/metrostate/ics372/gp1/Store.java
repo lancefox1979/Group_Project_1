@@ -111,16 +111,28 @@ public class Store implements Serializable {
 	}
 
 	public boolean purchaseWasher(String id, String brand, String model, int quantity) {
-		Washer washer = null;
+		Washer washer = store.searchWashers(brand + model);
 		Customer customer = null;
 		boolean purchase = customerList.findUser(id, customerList);
+		Iterator<Customer> customers = customerList.iterator();
+		
 		if (purchase) {
-			purchase = inventory.findWasher(brand, model, quantity);
+			if (washer == null) {
+				System.out.println("No such washer exists.");
+				return false;
+			} else {
+				purchase = inventory.findWasher(brand, model, quantity);
+			}
+			while (customers.hasNext()) {
+				Customer temp = customers.next();
+				if (temp.matches(id)) {
+					customer = temp;
+				}
+			}
 			if (purchase) {
 				// I couldn't think of a way to get customer info and make a
 				// purchase from inventory so I just made it remove quantity
 				// from inv
-				Iterator<Customer> customers = customerList.iterator();
 				int count = quantity;
 				while (customers.hasNext()) {
 					customer = customers.next();
@@ -174,8 +186,12 @@ public class Store implements Serializable {
 	 */
 	public String listWashers() {
 		Iterator<Washer> washers = inventory.getAllWashers();
+		Iterator<Washer> washerLog = washerList.iterator();
 		StringBuilder stringBuilder = new StringBuilder();
 		Map<Washer,Integer> washerCount = new LinkedHashMap<Washer,Integer>();
+		while (washerLog.hasNext()) {
+			washerCount.put(washerLog.next(), 0);
+		}
 		while (washers.hasNext()) {
 			washerCount.merge(washers.next(), 1, (x, y) -> x + y);
 		}
