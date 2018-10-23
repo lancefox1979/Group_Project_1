@@ -239,9 +239,12 @@ public class UserInterface {
 	 * the sale.
 	 * 
 	 */
-	/*Purchase: The actor identifies the washer by its brand and model names and the
-	customer by the customer id. The actor enters the quantity as well. If there is
-	enough on stock, the purchase is immediate. Otherwise, this goes on back order.*/
+	/*
+	 * Purchase: The actor identifies the washer by its brand and model names
+	 * and the customer by the customer id. The actor enters the quantity as
+	 * well. If there is enough on stock, the purchase is immediate. Otherwise,
+	 * this goes on back order.
+	 */
 	public void purchase() {
 		do {
 			String id = getToken("Enter customer id: ");
@@ -249,7 +252,7 @@ public class UserInterface {
 			String model = getToken("Enter washer model: ");
 			int quantity = getInteger("Enter quantity to purchase: ");
 			boolean purchased = store.purchaseWasher(id, brand, model, quantity);
-			if(purchased)
+			if (purchased)
 				System.out.println("Purchased " + quantity + " of " + brand + " " + model + " for customer " + id);
 			else
 				System.out.println("Purchase unsuccessful.");
@@ -291,7 +294,7 @@ public class UserInterface {
 	 * 
 	 */
 	public void displayTotal() {
-		// TODO: Implementation...
+		System.out.println("Total sales: $" + store.getTotalSales());
 	}
 
 	/**
@@ -305,7 +308,7 @@ public class UserInterface {
 				store = Store.retrieve();
 				if (store != null) {
 					System.out.println(" The store has been successfully retrieved from the file StoreData. \n");
-				} else {	
+				} else {
 					store = Store.instance();
 				}
 			}
