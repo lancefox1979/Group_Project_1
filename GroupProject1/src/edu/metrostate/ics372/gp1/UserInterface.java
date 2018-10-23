@@ -144,23 +144,24 @@ public class UserInterface {
 	public int getCommand() {
 		do {
 			try {
-				int value = Integer.parseInt(getToken("Enter command [" + HELP + "] for help"));
-				if (value >= EXIT && value <= HELP) {
+				int value = Integer.parseInt(getToken(""));
+				if (value >= EXIT && value <= SAVE) {
 					return value;
+				} else {
+					throw new NumberFormatException();
 				}
 			} catch (NumberFormatException nfe) {
-				System.out.println("Enter a number");
+				System.out.print("Invalid entry please try again.");
 			}
 		} while (true);
 	}
 
 	/**
-	 * Displays the help screen.
+	 * Displays the menu screen.
 	 * 
 	 */
-	public void help() {
+	public void displayMenu() {
 		System.out.println("Enter a number between 0 and 9 as explained below: \n");
-		System.out.println("[" + EXIT + "] to Exit\n");
 		System.out.println("[" + ADD_CUSTOMER + "] Add a customer.");
 		System.out.println("[" + ADD_MODEL + "] Add a model.");
 		System.out.println("[" + ADD_TO_INVENTORY + "] Add a washer to inventory.");
@@ -169,7 +170,7 @@ public class UserInterface {
 		System.out.println("[" + LIST_WASHERS + "] Display all washers.");
 		System.out.println("[" + DISPLAY_TOTAL + "] Display total sales.");
 		System.out.println("[" + SAVE + "] Save data.");
-		System.out.println("[" + HELP + "] Help menu.");
+		System.out.println("[" + EXIT + "] to Exit");
 	}
 
 	/**
@@ -179,14 +180,15 @@ public class UserInterface {
 	 * 
 	 */
 	public void addCustomer() {
-		String name = getToken("Enter the customer's name: ");
-		String phoneNumber = getToken("Enter the phone number: ");
-		Customer result;
-		result = store.addCustomer(name, phoneNumber);
-		if (result == null) {
-			System.out.println("Could not add customer.");
-		}
-		System.out.println(result);
+		do {
+			String name = getToken("Enter the customer's name: ");
+			String phoneNumber = getToken("Enter the phone number: ");
+			Customer customer = store.addCustomer(name, phoneNumber);
+			if (customer == null) {
+				System.out.println("Could not add customer.");
+			}
+			System.out.println(customer);
+		} while (yesOrNo("Would you like to add another Customer?"));
 	}
 
 	/**
@@ -196,18 +198,17 @@ public class UserInterface {
 	 * 
 	 */
 	public void addWasher() {
-		Washer result;
 		do {
 			String brand = getToken("Enter washer brand: ");
 			String model = getToken("Enter washer model: ");
 			double price = getDouble("Enter washer price: ");
-			result = store.addWasher(brand, model, price);
-			if (result != null) {
-				System.out.println(result);
+			Washer washer = store.addWasher(brand, model, price);
+			if (washer != null) {
+				System.out.println(washer);
 			} else {
 				System.out.println("Washer could not be added.");
 			}
-		} while (yesOrNo("Add more washers?"));
+		} while (yesOrNo("Would you like to add another washer?"));
 	}
 
 	/**
@@ -217,12 +218,11 @@ public class UserInterface {
 	 * 
 	 */
 	public void addToInventory() {
-		Washer washer;
 		do {
 			int quantity = 0;
 			String brand = getToken("Enter washer brand: ");
 			String model = getToken("Enter washer model: ");
-			washer = store.searchWashers(brand + model);
+			Washer washer = store.searchWashers(brand + model);
 			if (washer == null) {
 				System.out.println("No such washer exists.");
 				return;
@@ -323,9 +323,9 @@ public class UserInterface {
 	 * 
 	 */
 	public void process() {
-		int command;
-		help();
-		while ((command = getCommand()) != EXIT) {
+		displayMenu();
+		int command = getCommand();
+		while (command != EXIT) {
 			switch (command) {
 			case ADD_CUSTOMER:
 				addCustomer();
@@ -351,10 +351,9 @@ public class UserInterface {
 			case SAVE:
 				save();
 				break;
-			case HELP:
-				help();
-				break;
 			}
+			displayMenu();
+			command = getCommand();
 		}
 		System.out.println("Goodbye.");
 	}
