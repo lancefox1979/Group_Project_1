@@ -153,7 +153,7 @@ public class Store implements Serializable {
 
 	// Private helper method to quickly add a back order.
 	private boolean addToBackOrder(Customer customer, Washer washer, int quantity) {
-		return backOrderList.add(new BackOrder(customer, washer), quantity);
+		return backOrderList.insertBackOrder(new BackOrder(customer, washer, quantity));
 	}
 
 	/**

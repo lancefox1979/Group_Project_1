@@ -16,6 +16,7 @@ public class BackOrder implements Serializable, IMatchable<String> {
 	private static final long serialVersionUID = 1L;
 	private Customer customer;
 	private Washer washer;
+	private int quantity;
 
 	/**
 	 * The customer and washer are stored, along with the requested quantity.
@@ -27,9 +28,10 @@ public class BackOrder implements Serializable, IMatchable<String> {
 	 * @param quantity
 	 *            the number of washers requested for purchase
 	 */
-	public BackOrder(Customer customer, Washer washer) {
+	public BackOrder(Customer customer, Washer washer, int quantity) {
 		this.customer = customer;
 		this.washer = washer;
+		this.quantity = quantity;
 	}
 
 	/**
@@ -42,12 +44,21 @@ public class BackOrder implements Serializable, IMatchable<String> {
 	}
 
 	/**
-	 * Getter for the washer.
+	 * Getter for the washer of this back order.
 	 * 
 	 * @return washer of this back order
 	 */
 	public Washer getWasher() {
 		return washer;
+	}
+
+	/**
+	 * Getter for the quantity of this back order.
+	 * 
+	 * @return quantity of this back order
+	 */
+	public int getQuantity() {
+		return quantity;
 	}
 
 	@Override

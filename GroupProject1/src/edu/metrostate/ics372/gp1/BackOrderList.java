@@ -36,7 +36,7 @@ public class BackOrderList extends ItemList<BackOrder, String> {
 	 *            the back order to be inserted
 	 * @return true if the back order could be inserted
 	 */
-	public boolean insertCustomer(BackOrder backOrder) {
+	public boolean insertBackOrder(BackOrder backOrder) {
 		return super.add(backOrder);
 	}
 }
