@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author Shannon Fisher
  * 
  */
-public class BackOrder implements Serializable {
+public class BackOrder implements Serializable, IMatchable<String> {
 	private static final long serialVersionUID = 1L;
 	private Customer customer;
 	private Washer washer;
@@ -48,5 +48,14 @@ public class BackOrder implements Serializable {
 	 */
 	public Washer getWasher() {
 		return washer;
+	}
+
+	@Override
+	public boolean matches(String key) {
+		if (this.customer.getId().equals(key)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

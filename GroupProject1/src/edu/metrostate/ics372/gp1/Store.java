@@ -23,16 +23,20 @@ public class Store implements Serializable {
 	private Inventory inventory;
 	private CustomerList customerList;
 	private WasherList washerList;
+	private BackOrderList backOrderList;
 	private static Store store;
+	private double totalSales;
 
 	/**
-	 * Private constructor using the singleton pattern. Creates the inventory
-	 * and customer collection objects.
+	 * Private constructor using the singleton pattern. Creates the inventory,
+	 * customer, washer, and back order collection objects.
 	 */
 	private Store() {
 		inventory = Inventory.instance();
 		customerList = CustomerList.instance();
 		washerList = WasherList.instance();
+		backOrderList = BackOrderList.instance();
+		totalSales = 0.0;
 	}
 
 	/**
@@ -103,41 +107,53 @@ public class Store implements Serializable {
 		}
 		return result;
 	}
-	
-	
+
 	public boolean purchaseWasher(String id, String brand, String model, int quantity) {
-		boolean purchase = customerList.findUser(id,customerList);
-		if(purchase)
-		{
+		Washer washer = null;
+		Customer customer = null;
+		boolean purchase = customerList.findUser(id, customerList);
+		if (purchase) {
 			purchase = inventory.findWasher(brand, model, quantity);
-			if(purchase)
-			{
-				//I couldn't think of a way to get customer info and make a purchase from inventory so I just made it remove quantity from inv
+			if (purchase) {
+				// I couldn't think of a way to get customer info and make a
+				// purchase from inventory so I just made it remove quantity
+				// from inv
 				Iterator<Customer> customers = customerList.iterator();
 				int count = quantity;
 				while (customers.hasNext()) {
-					Customer customer = customers.next();
-					if(customer.matches(id) && (count != 0))
-					{	
+					customer = customers.next();
+					if (customer.matches(id) && (count != 0)) {
 						Iterator<Washer> washers = washerList.iterator();
 						while (washers.hasNext()) {
-							Washer washer = washers.next();
-							if(washer.matches(brand+model))
+							washer = washers.next();
+							if (washer.matches(brand + model)) {
 								customer.purchase(washer);
+								totalSales += (washer.getPrice() * quantity);
+							}
 						}
 						quantity--;
 					}
 				}
 				inventory.updateQuantity(brand, model, quantity);
-				
+
 			} else {
-				System.out.println("Not enough of " + brand + " " + model + " in stock. Back order placed.");
+				if (addToBackOrder(customer, washer, quantity)) {
+					System.out.println("Not enough of " + brand + " " + model + " in stock. Back order placed.");
+				} else {
+					System.out.println("The back order could not be placed.");
+				}
+
 			}
 		} else {
 			System.out.println("Invalid Customer ID.");
 		}
-		
+
 		return purchase;
+	}
+
+	// Private helper method to quickly add a back order.
+	private boolean addToBackOrder(Customer customer, Washer washer, int quantity) {
+		return backOrderList.add(new BackOrder(customer, washer), quantity);
 	}
 
 	/**
@@ -191,6 +207,15 @@ public class Store implements Serializable {
 	}
 
 	/**
+	 * Getter method to retrieve the total sales.
+	 * 
+	 * @return the total sales
+	 */
+	public double getTotalSales() {
+		return totalSales;
+	}
+
+	/**
 	 * Retrieves a deserialized version of the Store from disk.
 	 * 
 	 * @return a Store object
@@ -203,7 +228,7 @@ public class Store implements Serializable {
 			CustomerIdServer.retrieve(input);
 			return store;
 		} catch (IOException ioe) {
-			//ioe.printStackTrace();
+			// ioe.printStackTrace();
 			System.out.println("File doesnt exist; creating new store...");
 			return null;
 		} catch (ClassNotFoundException cnfe) {
