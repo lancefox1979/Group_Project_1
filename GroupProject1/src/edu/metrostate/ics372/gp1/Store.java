@@ -131,7 +131,7 @@ public class Store implements Serializable {
 								totalSales += (washer.getPrice() * quantity);
 							}
 						}
-						quantity--;
+						count--;
 					}
 				}
 				inventory.updateQuantity(brand, model, quantity);
