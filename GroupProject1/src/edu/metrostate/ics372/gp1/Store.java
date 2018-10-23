@@ -7,6 +7,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The Store class is used for calling the primary business functions of the
@@ -171,7 +173,17 @@ public class Store implements Serializable {
 	 * @return a list of all washers in the inventory
 	 */
 	public String listWashers() {
-		return inventory.getAllWashers();
+		Iterator<Washer> washers = inventory.getAllWashers();
+		StringBuilder stringBuilder = new StringBuilder();
+		Map<Washer,Integer> washerCount = new LinkedHashMap<Washer,Integer>();
+		while (washers.hasNext()) {
+			washerCount.merge(washers.next(), 1, (x, y) -> x + y);
+		}
+		for (Map.Entry<Washer,Integer> entry : washerCount.entrySet()) {
+			stringBuilder.append(entry.getKey() + " inventory count: " + entry.getValue() +"\n");
+		}
+		
+		return stringBuilder.toString();
 	}
 
 	/**

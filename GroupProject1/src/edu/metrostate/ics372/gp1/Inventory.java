@@ -98,12 +98,7 @@ public class Inventory extends ItemList<Washer, String> {
 	 * 
 	 * @return all washers in the inventory
 	 */
-	public String getAllWashers() {
-		StringBuilder stringBuilder = new StringBuilder();
-		Iterator<Washer> washers = this.iterator();
-		while (washers.hasNext()) {
-			stringBuilder.append(washers.next() + "\n");
-		}
-		return stringBuilder.toString();
+	public Iterator<Washer> getAllWashers() {
+		return this.iterator();
 	}
 }

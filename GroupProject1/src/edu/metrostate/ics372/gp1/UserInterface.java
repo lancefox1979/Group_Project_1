@@ -27,7 +27,6 @@ public class UserInterface {
 	private static final int LIST_WASHERS = 6;
 	private static final int DISPLAY_TOTAL = 7;
 	private static final int SAVE = 8;
-	private static final int HELP = 9;
 
 	/**
 	 * Made private for the singleton pattern. Conditionally looks for any saved
@@ -161,7 +160,7 @@ public class UserInterface {
 	 * 
 	 */
 	public void displayMenu() {
-		System.out.println("Enter a number between 0 and 9 as explained below: \n");
+		System.out.println("Enter a number between 0 and 8 as explained below: \n");
 		System.out.println("[" + ADD_CUSTOMER + "] Add a customer.");
 		System.out.println("[" + ADD_MODEL + "] Add a model.");
 		System.out.println("[" + ADD_TO_INVENTORY + "] Add a washer to inventory.");
