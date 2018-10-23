@@ -43,38 +43,37 @@ public class Inventory extends ItemList<Washer, String> {
 	public boolean insertWasher(Washer washer, int quantity) {
 		return super.add(washer, quantity);
 	}
-	
+
 	/**
 	 * Updates the quantity of a washer for a specified quantity.
 	 * 
 	 * @param brand
 	 *            the washer brand
 	 * @param model
-	 * 			  the washer model
+	 *            the washer model
 	 * @param quantity
-	 * 			  quantity to remove
+	 *            quantity to remove
 	 */
 	public void updateQuantity(String brand, String model, int quantity) {
 		Iterator<Washer> washers = this.iterator();
 		while (washers.hasNext()) {
 			Washer washer = washers.next();
-			if(washer.matches(brand+model) && (quantity != 0))
-			{
+			if (washer.matches(brand + model) && (quantity != 0)) {
 				washers.remove();
 				quantity--;
 			}
 		}
 	}
-	
+
 	/**
 	 * Finds a washer from the collection.
 	 * 
 	 * @param brand
 	 *            the washer brand
 	 * @param model
-	 * 			  the washer model
+	 *            the washer model
 	 * @param quantity
-	 * 			  quantity desired to purchase
+	 *            quantity desired to purchase
 	 * @return true if the washer was found with quantity met
 	 */
 	public boolean findWasher(String brand, String model, int quantity) {
@@ -83,12 +82,14 @@ public class Inventory extends ItemList<Washer, String> {
 		int count = 0;
 		while (washers.hasNext()) {
 			Washer washer = washers.next();
-			if(washer.matches(brand+model))
+			if (washer.matches(brand + model)) {
 				count++;
+			}
 		}
-		
-		if(count >= quantity)
+
+		if (count >= quantity) {
 			found = true;
+		}
 		return found;
 	}
 
