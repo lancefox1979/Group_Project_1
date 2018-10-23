@@ -1,5 +1,4 @@
 package edu.metrostate.ics372.gp1;
-// testing
 
 import java.io.BufferedReader;
 import java.io.IOException;
