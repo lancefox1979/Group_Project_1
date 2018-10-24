@@ -49,7 +49,7 @@ public class WasherList extends ItemList<Washer, String> {
 	 * already exists and a new price is defined. The system will update the
 	 * price of the washer to the new price indicated.
 	 */
-	public boolean washerIsUnique(Washer newWasher) {
+	private boolean washerIsUnique(Washer newWasher) {
 		for (Washer washer : getList()) {
 			if (newWasher.getBrand().equals(washer.getBrand()) && newWasher.getModel().equals(washer.getModel())) {
 				System.out.println("Washer Brand and Model already exists.");

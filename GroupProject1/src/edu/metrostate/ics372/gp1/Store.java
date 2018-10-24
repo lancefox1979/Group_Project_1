@@ -197,10 +197,13 @@ public class Store implements Serializable {
 			washerCount.merge(washers.next(), 1, (x, y) -> x + y);
 		}
 		for (Map.Entry<Washer, Integer> entry : washerCount.entrySet()) {
-			stringBuilder.append(entry.getKey() + " inventory count: " + entry.getValue() + "\n");
+			stringBuilder.append(entry.getKey() + " Inventory count: " + entry.getValue() + "\n");
 		}
-
-		return stringBuilder.toString();
+		if (stringBuilder.length() > 0) {
+			return stringBuilder.toString();
+		} else {
+			return "No Washers Found";
+		}
 	}
 
 	/**

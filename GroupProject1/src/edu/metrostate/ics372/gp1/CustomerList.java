@@ -50,7 +50,7 @@ public class CustomerList extends ItemList<Customer, String> {
 	/*
 	 * Tests to see if customer passed is unique in the list
 	 */
-	public boolean customerIsUnique(Customer customer) {
+	private boolean customerIsUnique(Customer customer) {
 		for (Customer person : getList()) {
 			if (customer.getName().equals(person.getName())
 					&& customer.getPhoneNumber().equals(person.getPhoneNumber())) {
@@ -83,6 +83,10 @@ public class CustomerList extends ItemList<Customer, String> {
 		while (customers.hasNext()) {
 			stringBuilder.append(customers.next() + "\n");
 		}
-		return stringBuilder.toString();
+		if (stringBuilder.length() > 0) {
+			return stringBuilder.toString();
+		} else {
+			return "No Customers Found";
+		}
 	}
 }
