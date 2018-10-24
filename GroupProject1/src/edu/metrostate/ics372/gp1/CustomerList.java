@@ -47,6 +47,9 @@ public class CustomerList extends ItemList<Customer, String> {
 		}
 	}
 
+	/*
+	 * Tests to see if customer passed is unique in the list
+	 */
 	public boolean customerIsUnique(Customer customer) {
 		for (Customer person : getList()) {
 			if (customer.getName().equals(person.getName())
