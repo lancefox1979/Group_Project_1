@@ -250,14 +250,13 @@ public class UserInterface {
 	 */
 	public void purchase() {
 		do {
-			String id = getToken("Enter customer id: ").toUpperCase().trim();
+			String id = getToken("Enter customer id: ");
 			String brand = getToken("Enter washer brand: ").toUpperCase().trim();
 			String model = getToken("Enter washer model: ").toUpperCase().trim();
 			int quantity = getInteger("Enter quantity to purchase: ");
 			boolean purchased = store.purchaseWasher(id, brand, model, quantity);
 			if (purchased) {
-				System.out.println(
-						String.format("Customer: %s purchased %d of Brand: %s Model: %s", id, quantity, model, brand));
+				System.out.println("Purchased " + quantity + " of " + brand + " " + model + " for customer " + id);
 			} else {
 				System.out.println("Purchase unsuccessful.");
 			}

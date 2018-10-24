@@ -150,10 +150,10 @@ public class Store implements Serializable {
 					}
 				}
 				inventory.updateQuantity(brand, model, quantity);
+
 			} else {
 				if (addToBackOrder(customer, washer, quantity)) {
-					System.out.println(String.format(
-							"Not enough Brand: %s Model: %s in stock. A back order will be placed.", brand, model));
+					System.out.println("Not enough of " + brand + " " + model + " in stock. Back order placed.");
 				} else {
 					System.out.println("The back order could not be placed.");
 				}
