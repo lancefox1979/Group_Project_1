@@ -34,6 +34,7 @@ public class Customer implements Serializable, IMatchable<String> {
 	public Customer(String name, String phoneNumber) {
 		this.name = name;
 		this.phoneNumber = phoneNumber;
+		id = MEMBER_STRING + (CustomerIdServer.instance()).getId();
 	}
 
 	/**
@@ -61,10 +62,6 @@ public class Customer implements Serializable, IMatchable<String> {
 	 */
 	public String getId() {
 		return id;
-	}
-
-	public void setId() {
-		id = MEMBER_STRING + (CustomerIdServer.instance()).getId();
 	}
 
 	/**
@@ -148,7 +145,7 @@ public class Customer implements Serializable, IMatchable<String> {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Customer ID: %-20s Name: %-20s Phone #: %-20s", id, name, id);
+		return "Customer name: " + name + ", phone number: " + phoneNumber + ", ID: " + id + ".";
 	}
 
 	/**

@@ -180,14 +180,13 @@ public class UserInterface {
 	 */
 	public void addCustomer() {
 		do {
-			String name = getToken("Enter the customer's name: ").toUpperCase();
+			String name = getToken("Enter the customer's name: ");
 			String phoneNumber = getToken("Enter the phone number: ");
 			Customer customer = store.addCustomer(name, phoneNumber);
 			if (customer == null) {
 				System.out.println("Could not add customer.");
-			} else {
-				System.out.println(customer + " has been added.");
 			}
+			System.out.println(customer);
 		} while (yesOrNo("Would you like to add another Customer?"));
 	}
 
@@ -229,12 +228,12 @@ public class UserInterface {
 			}
 			quantity = getInteger("Enter quantity to add: ");
 			boolean result = store.addWasherToInventory(brand, model, quantity);
-			if (result) {
+			if(result) {
 				System.out.println("Added " + quantity + " of " + washer);
-			} else {
+			}else {
 				System.out.println("Washer could not be added to inventory.");
 			}
-
+			
 		} while (yesOrNo("Add more washers to the inventory?"));
 	}
 
