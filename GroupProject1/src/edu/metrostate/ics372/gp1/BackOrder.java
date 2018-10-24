@@ -21,7 +21,7 @@ public class BackOrder implements Serializable {
 	}
 
 	public void reduceQuantity(int quantity) {
-		this.quantity = getQuantity() - quantity;
+		this.quantity = this.quantity - quantity;
 	}
 
 }
