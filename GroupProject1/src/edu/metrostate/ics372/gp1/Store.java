@@ -225,7 +225,7 @@ public class Store implements Serializable {
 					count--;
 				}	
 				inventory.updateQuantity(washer.getBrand(), washer.getModel(), quantity);
-				System.out.println("A backorder for " + customer.getId() + " has been processed for: " + String.format("$%.2f.%n", (float)sale));
+				System.out.println("A backorder for " + customer.getId() + " purchasing " + quantity + " of " + washer+" has been processed for: " + String.format("$%.2f.%n", (float)sale));
 			}
 		}
 	}
