@@ -28,6 +28,14 @@ public class UserInterface {
 	private static final int LIST_WASHERS = 6;
 	private static final int DISPLAY_TOTAL = 7;
 	private static final int SAVE = 8;
+	private Washer washer;
+	private Customer customer;
+	private String brand;
+	private String model;
+	private double price;
+	private String id;
+	private String name;
+	private String phoneNumber;
 
 	/**
 	 * Made private for the singleton pattern. Conditionally looks for any saved
@@ -54,6 +62,212 @@ public class UserInterface {
 		} else {
 			return userInterface;
 		}
+	}
+
+	/**
+	 * Method to be called for adding a customer. Prompts the user for the
+	 * appropriate values and uses the appropriate Store method for adding the
+	 * customer.
+	 * 
+	 */
+	public void addCustomer() {
+		do {
+			customer = store.addCustomer(getAndSetName(), getAndSetPhoneNumber());
+			if (customer == null) {
+				System.out.println("Could not add customer.");
+			} else {
+				System.out.println(customer + " has been added.");
+			}
+		} while (yesOrNo("Would you like to add another Customer?"));
+	}
+
+	/**
+	 * Method to be called for adding a washer. Prompts the user for the
+	 * appropriate values and uses the appropriate Store method for adding the
+	 * washer.
+	 * 
+	 */
+	public void addWasher() {
+		do {
+			washer = store.addWasher(getAndSetBrand(), getAndSetModel(), getAndSetPrice());
+			if (washer != null) {
+				System.out.println(washer);
+			}
+		} while (yesOrNo("Would you like to add another washer?"));
+	}
+
+	/**
+	 * Method to be called for adding a washer to the inventory. Prompts the
+	 * user for the appropriate values and uses the appropriate Inventory method
+	 * for adding the washer.
+	 * 
+	 */
+	public void addToInventory() {
+		do {
+			washer = store.searchWashers(getAndSetBrand() + getAndSetModel());
+			if (washer == null) {
+				System.out.println("No such washer exists.");
+				return;
+			}
+			int quantity = getInteger("Enter quantity to add: ");
+			boolean result = store.addWasherToInventory(washer, quantity);
+			if (result) {
+				System.out.println("Added " + quantity + " of " + washer);
+			} else {
+				System.out.println("Washer could not be added to inventory.");
+			}
+
+		} while (yesOrNo("Add more washers to the inventory?"));
+	}
+
+	/**
+	 * Method to be called for purchasing a washer. Prompts the user for the
+	 * appropriate values and uses the appropriate Store method for executing
+	 * the sale.
+	 * 
+	 * Purchase: The actor identifies the washer by its brand and model names
+	 * and the customer by the customer id. The actor enters the quantity as
+	 * well. If there is enough on stock, the purchase is immediate. Otherwise,
+	 * this goes on back order.
+	 * 
+	 */
+	public void purchase() {
+		try {
+			do {
+				if (store.isACustomer(getAndSetId())
+						&& store.searchWashers(getAndSetBrand() + getAndSetModel()) != null) {
+					int quantity = getInteger("Enter quantity to purchase: ");
+					boolean purchased = store.purchaseWasher(id, brand, model, quantity);
+					if (purchased) {
+						System.out.println(String.format("Customer: %s purchased %d of Brand: %s Model: %s", id,
+								quantity, model, brand));
+					} else {
+						System.out.println("Purchase unsuccessful.");
+					}
+				} else {
+					throw new NoSuchElementException();
+				}
+			} while (yesOrNo("Make another Purchase?"));
+
+		} catch (NoSuchElementException e) {
+			System.out.println("Not a valid input. Returning to Main Menu...");
+		}
+	}
+
+	/**
+	 * Method to be called for displaying a list of all customers in the system.
+	 * 
+	 */
+	public void listCustomers() {
+		System.out.println(store.listCustomers());
+	}
+
+	/**
+	 * Method to be called for displaying a list of all washers in the
+	 * inventory.
+	 * 
+	 */
+	public void listWashers() {
+		System.out.println(store.listWashers());
+	}
+
+	/**
+	 * Method to be called for displaying the total washer sales.
+	 * 
+	 */
+	public void displayTotal() {
+		System.out.println(String.format("Total Sales: $%-10.2f", store.getTotalSales()));
+	}
+
+	/**
+	 * Displays the menu screen.
+	 * 
+	 */
+	public void displayMenu() {
+		System.out.println("Enter a number between 0 and 8 as explained below: \n");
+		System.out.println("[" + ADD_CUSTOMER + "] Add a customer.");
+		System.out.println("[" + ADD_MODEL + "] Add a model.");
+		System.out.println("[" + ADD_TO_INVENTORY + "] Add a washer to inventory.");
+		System.out.println("[" + PURCHASE + "] Purchase a washer.");
+		System.out.println("[" + LIST_CUSTOMERS + "] Display all customers.");
+		System.out.println("[" + LIST_WASHERS + "] Display all washers.");
+		System.out.println("[" + DISPLAY_TOTAL + "] Display total sales.");
+		System.out.println("[" + SAVE + "] Save data.");
+		System.out.println("[" + EXIT + "] to Exit");
+	}
+
+	/**
+	 * Method to be called for saving the Store object. Uses the appropriate
+	 * Store method for saving.
+	 * 
+	 */
+	private void save() {
+		if (Store.save()) {
+			System.out.println(" > The store has been successfully saved in the file StoreData.\n");
+		} else {
+			System.out.println(" > An error occurred during saving.\n");
+		}
+	}
+
+	/**
+	 * Method to be called for retrieving saved data. Uses the appropriate Store
+	 * method for retrieval.
+	 * 
+	 */
+	private void retrieve() {
+		try {
+			if (store == null) {
+				store = Store.retrieve();
+				if (store != null) {
+					System.out.println(" The store has been successfully retrieved from the file StoreData. \n");
+				} else {
+					store = Store.instance();
+				}
+			}
+		} catch (Exception cnfe) {
+			cnfe.printStackTrace();
+		}
+	}
+
+	/**
+	 * Orchestrates the whole process. Calls the appropriate method for the
+	 * different functionalities.
+	 * 
+	 */
+	public void process() {
+		displayMenu();
+		int command = getCommand();
+		while (command != EXIT) {
+			switch (command) {
+			case ADD_CUSTOMER:
+				addCustomer();
+				break;
+			case ADD_MODEL:
+				addWasher();
+				break;
+			case ADD_TO_INVENTORY:
+				addToInventory();
+				break;
+			case PURCHASE:
+				purchase();
+				break;
+			case LIST_CUSTOMERS:
+				listCustomers();
+				break;
+			case LIST_WASHERS:
+				listWashers();
+				break;
+			case DISPLAY_TOTAL:
+				displayTotal();
+				break;
+			case SAVE:
+				save();
+				break;
+			}
+			displayMenu();
+			command = getCommand();
+		}
+		System.out.println("Goodbye.");
 	}
 
 	/**
@@ -156,221 +370,52 @@ public class UserInterface {
 		} while (true);
 	}
 
-	/**
-	 * Displays the menu screen.
-	 * 
-	 */
-	public void displayMenu() {
-		System.out.println("Enter a number between 0 and 8 as explained below: \n");
-		System.out.println("[" + ADD_CUSTOMER + "] Add a customer.");
-		System.out.println("[" + ADD_MODEL + "] Add a model.");
-		System.out.println("[" + ADD_TO_INVENTORY + "] Add a washer to inventory.");
-		System.out.println("[" + PURCHASE + "] Purchase a washer.");
-		System.out.println("[" + LIST_CUSTOMERS + "] Display all customers.");
-		System.out.println("[" + LIST_WASHERS + "] Display all washers.");
-		System.out.println("[" + DISPLAY_TOTAL + "] Display total sales.");
-		System.out.println("[" + SAVE + "] Save data.");
-		System.out.println("[" + EXIT + "] to Exit");
-	}
-
-	/**
-	 * Method to be called for adding a customer. Prompts the user for the
-	 * appropriate values and uses the appropriate Store method for adding the
-	 * customer.
-	 * 
-	 */
-	public void addCustomer() {
-		do {
-			String name = getToken("Enter the customer's name: ").toUpperCase().trim();
-			String phoneNumber = getToken("Enter the phone number: ");
-			Customer customer = store.addCustomer(name, phoneNumber);
-			if (customer == null) {
-				System.out.println("Could not add customer.");
-			} else {
-				System.out.println(customer + " has been added.");
-			}
-		} while (yesOrNo("Would you like to add another Customer?"));
-	}
-
-	/**
-	 * Method to be called for adding a washer. Prompts the user for the
-	 * appropriate values and uses the appropriate Store method for adding the
-	 * washer.
-	 * 
-	 */
-	public void addWasher() {
-		do {
-			String brand = getToken("Enter washer brand: ").toUpperCase().trim();
-			String model = getToken("Enter washer model: ").toUpperCase().trim();
-			double price = getDouble("Enter washer price: ");
-			Washer washer = store.addWasher(brand, model, price);
-			if (washer != null) {
-				System.out.println(washer);
-			}
-		} while (yesOrNo("Would you like to add another washer?"));
-	}
-
-	/**
-	 * Method to be called for adding a washer to the inventory. Prompts the
-	 * user for the appropriate values and uses the appropriate Inventory method
-	 * for adding the washer.
-	 * 
-	 */
-	public void addToInventory() {
-		do {
-			int quantity = 0;
-			String brand = getToken("Enter washer brand: ").toUpperCase().trim();
-			String model = getToken("Enter washer model: ").toUpperCase().trim();
-			Washer washer = store.searchWashers(brand + model);
-			if (washer == null) {
-				System.out.println("No such washer exists.");
-				return;
-			}
-			quantity = getInteger("Enter quantity to add: ");
-			boolean result = store.addWasherToInventory(brand, model, quantity);
-			if (result) {
-				System.out.println("Added " + quantity + " of " + washer);
-			} else {
-				System.out.println("Washer could not be added to inventory.");
-			}
-
-		} while (yesOrNo("Add more washers to the inventory?"));
-	}
-
-	/**
-	 * Method to be called for purchasing a washer. Prompts the user for the
-	 * appropriate values and uses the appropriate Store method for executing
-	 * the sale.
-	 * 
-	 */
 	/*
-	 * Purchase: The actor identifies the washer by its brand and model names
-	 * and the customer by the customer id. The actor enters the quantity as
-	 * well. If there is enough on stock, the purchase is immediate. Otherwise,
-	 * this goes on back order.
+	 * Prompts clerk for brand
 	 */
-	public void purchase() {
-		try {
-			do {
-				String id = getToken("Enter customer id: ").toUpperCase().trim();
-				String brand = getToken("Enter washer brand: ").toUpperCase().trim();
-				String model = getToken("Enter washer model: ").toUpperCase().trim();
-				if (store.isACustomer(id) && store.searchWashers(brand + model) != null) {
-					int quantity = getInteger("Enter quantity to purchase: ");
-					boolean purchased = store.purchaseWasher(id, brand, model, quantity);
-					if (purchased) {
-						System.out.println(String.format("Customer: %s purchased %d of Brand: %s Model: %s", id,
-								quantity, model, brand));
-					} else {
-						System.out.println("Purchase unsuccessful.");
-					}
-				} else {
-					throw new NoSuchElementException();
-				}
-			} while (yesOrNo("Make another Purchase?"));
-
-		} catch (NoSuchElementException e) {
-			System.out.println("Not a valid input. Returning to Main Menu...");
-		}
+	private String getAndSetBrand() {
+		this.brand = getToken("Enter washer brand: ").toUpperCase().trim();
+		return this.brand;
 	}
 
-	/**
-	 * Method to be called for displaying a list of all customers in the system.
-	 * 
+	/*
+	 * Prompts clerk for model
 	 */
-	public void listCustomers() {
-		System.out.println(store.listCustomers());
+	private String getAndSetModel() {
+		this.model = getToken("Enter washer model: ").toUpperCase().trim();
+		return this.model;
 	}
 
-	/**
-	 * Method to be called for displaying a list of all washers in the
-	 * inventory.
-	 * 
+	/*
+	 * Prompts clerk for Price
 	 */
-	public void listWashers() {
-		System.out.println(store.listWashers());
+	private double getAndSetPrice() {
+		this.price = getDouble("Enter washer price: ");
+		return this.price;
 	}
 
-	/**
-	 * Method to be called for saving the Store object. Uses the appropriate
-	 * Store method for saving.
-	 * 
+	/*
+	 * Prompts clerk for ID
 	 */
-	private void save() {
-		if (Store.save()) {
-			System.out.println(" > The store has been successfully saved in the file StoreData.\n");
-		} else {
-			System.out.println(" > An error occurred during saving.\n");
-		}
+	private String getAndSetId() {
+		this.id = getToken("Enter customer id: ").toUpperCase().trim();
+		return this.id;
 	}
 
-	/**
-	 * Method to be called for displaying the total washer sales.
-	 * 
+	/*
+	 * Prompts clerk for Name
 	 */
-	public void displayTotal() {
-		System.out.println(String.format("Total Sales: $%-10.2f", store.getTotalSales()));
+	private String getAndSetName() {
+		this.name = getToken("Enter a Name: ").toUpperCase().trim();
+		return this.name;
 	}
 
-	/**
-	 * Method to be called for retrieving saved data. Uses the appropriate Store
-	 * method for retrieval.
-	 * 
+	/*
+	 * Prompts clerk for Phone Number
 	 */
-	private void retrieve() {
-		try {
-			if (store == null) {
-				store = Store.retrieve();
-				if (store != null) {
-					System.out.println(" The store has been successfully retrieved from the file StoreData. \n");
-				} else {
-					store = Store.instance();
-				}
-			}
-		} catch (Exception cnfe) {
-			cnfe.printStackTrace();
-		}
-	}
-
-	/**
-	 * Orchestrates the whole process. Calls the appropriate method for the
-	 * different functionalities.
-	 * 
-	 */
-	public void process() {
-		displayMenu();
-		int command = getCommand();
-		while (command != EXIT) {
-			switch (command) {
-			case ADD_CUSTOMER:
-				addCustomer();
-				break;
-			case ADD_MODEL:
-				addWasher();
-				break;
-			case ADD_TO_INVENTORY:
-				addToInventory();
-				break;
-			case PURCHASE:
-				purchase();
-				break;
-			case LIST_CUSTOMERS:
-				listCustomers();
-				break;
-			case LIST_WASHERS:
-				listWashers();
-				break;
-			case DISPLAY_TOTAL:
-				displayTotal();
-				break;
-			case SAVE:
-				save();
-				break;
-			}
-			displayMenu();
-			command = getCommand();
-		}
-		System.out.println("Goodbye.");
+	private String getAndSetPhoneNumber() {
+		this.phoneNumber = getToken("Enter a Phone Number: ");
+		return this.phoneNumber;
 	}
 
 	/**
