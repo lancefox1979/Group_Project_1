@@ -116,7 +116,7 @@ public class Store implements Serializable {
 		Customer customer = null;
 		boolean purchase = customerList.findUser(id, customerList);
 		Iterator<Customer> customers = customerList.iterator();
-		
+
 		if (purchase) {
 			if (washer == null) {
 				System.out.println("No such washer exists.");
@@ -189,17 +189,17 @@ public class Store implements Serializable {
 		Iterator<Washer> washers = inventory.getAllWashers();
 		Iterator<Washer> washerLog = washerList.iterator();
 		StringBuilder stringBuilder = new StringBuilder();
-		Map<Washer,Integer> washerCount = new LinkedHashMap<Washer,Integer>();
+		Map<Washer, Integer> washerCount = new LinkedHashMap<Washer, Integer>();
 		while (washerLog.hasNext()) {
 			washerCount.put(washerLog.next(), 0);
 		}
 		while (washers.hasNext()) {
 			washerCount.merge(washers.next(), 1, (x, y) -> x + y);
 		}
-		for (Map.Entry<Washer,Integer> entry : washerCount.entrySet()) {
-			stringBuilder.append(entry.getKey() + " inventory count: " + entry.getValue() +"\n");
+		for (Map.Entry<Washer, Integer> entry : washerCount.entrySet()) {
+			stringBuilder.append(entry.getKey() + " inventory count: " + entry.getValue() + "\n");
 		}
-		
+
 		return stringBuilder.toString();
 	}
 
