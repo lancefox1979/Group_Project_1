@@ -74,9 +74,6 @@ public class ItemList<T extends IMatchable<K>, K> implements Serializable {
 		return list.iterator();
 	}
 
-	/*
-	 * Returns the list
-	 */
 	public List<T> getList() {
 		return list;
 	}

@@ -180,7 +180,7 @@ public class UserInterface {
 	 */
 	public void addCustomer() {
 		do {
-			String name = getToken("Enter the customer's name: ").toUpperCase().trim();
+			String name = getToken("Enter the customer's name: ").toUpperCase();
 			String phoneNumber = getToken("Enter the phone number: ");
 			Customer customer = store.addCustomer(name, phoneNumber);
 			if (customer == null) {
@@ -199,12 +199,14 @@ public class UserInterface {
 	 */
 	public void addWasher() {
 		do {
-			String brand = getToken("Enter washer brand: ").toUpperCase().trim();
-			String model = getToken("Enter washer model: ").toUpperCase().trim();
+			String brand = getToken("Enter washer brand: ");
+			String model = getToken("Enter washer model: ");
 			double price = getDouble("Enter washer price: ");
 			Washer washer = store.addWasher(brand, model, price);
 			if (washer != null) {
 				System.out.println(washer);
+			} else {
+				System.out.println("Washer could not be added.");
 			}
 		} while (yesOrNo("Would you like to add another washer?"));
 	}
@@ -218,8 +220,8 @@ public class UserInterface {
 	public void addToInventory() {
 		do {
 			int quantity = 0;
-			String brand = getToken("Enter washer brand: ").toUpperCase().trim();
-			String model = getToken("Enter washer model: ").toUpperCase().trim();
+			String brand = getToken("Enter washer brand: ");
+			String model = getToken("Enter washer model: ");
 			Washer washer = store.searchWashers(brand + model);
 			if (washer == null) {
 				System.out.println("No such washer exists.");
@@ -251,8 +253,8 @@ public class UserInterface {
 	public void purchase() {
 		do {
 			String id = getToken("Enter customer id: ");
-			String brand = getToken("Enter washer brand: ").toUpperCase().trim();
-			String model = getToken("Enter washer model: ").toUpperCase().trim();
+			String brand = getToken("Enter washer brand: ");
+			String model = getToken("Enter washer model: ");
 			int quantity = getInteger("Enter quantity to purchase: ");
 			boolean purchased = store.purchaseWasher(id, brand, model, quantity);
 			if (purchased) {
@@ -298,7 +300,7 @@ public class UserInterface {
 	 * 
 	 */
 	public void displayTotal() {
-		System.out.println(String.format("Total Sales: $%-10.2f", store.getTotalSales()));
+		System.out.println("Total sales: $" + store.getTotalSales());
 	}
 
 	/**

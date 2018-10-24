@@ -36,13 +36,6 @@ public class Washer implements Serializable, IMatchable<String> {
 		this.brand = brand;
 		this.model = model;
 		this.id = brand + model;
-		setPrice(price);
-	}
-
-	/*
-	 * Sets the price for the washer
-	 */
-	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -162,6 +155,6 @@ public class Washer implements Serializable, IMatchable<String> {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Brand: %-20s Model: %-20s Price: $%-20.2f", brand, model, price);
+		return "Brand: " + brand + ", Model: " + model + ", Price: " + price;
 	}
 }
