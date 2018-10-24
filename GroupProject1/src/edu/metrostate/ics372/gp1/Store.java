@@ -102,7 +102,8 @@ public class Store implements Serializable {
 	 *            the number of washers to add
 	 * @return true if the washer could be added to the inventory
 	 */
-	public boolean addWasherToInventory(Washer washer, int quantity) {
+	public boolean addWasherToInventory(String brand, String model, int quantity) {
+		Washer washer = searchWashers(brand + model);
 		boolean result = inventory.insertWasher(washer, quantity);
 		if (result) {
 			processBackOrders(washer.getId());

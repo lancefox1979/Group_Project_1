@@ -227,8 +227,13 @@ public class UserInterface {
 				return;
 			}
 			quantity = getInteger("Enter quantity to add: ");
-			store.addWasherToInventory(washer, quantity);
-			System.out.println("Added " + quantity + " of " + washer);
+			boolean result = store.addWasherToInventory(brand, model, quantity);
+			if(result) {
+				System.out.println("Added " + quantity + " of " + washer);
+			}else {
+				System.out.println("Washer could not be added to inventory.");
+			}
+			
 		} while (yesOrNo("Add more washers to the inventory?"));
 	}
 
