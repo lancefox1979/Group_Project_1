@@ -148,7 +148,7 @@ public class Customer implements Serializable, IMatchable<String> {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Customer ID: %-20s Name: %-20s Phone #: %-20s", id, name, id);
+		return String.format("Customer ID: %-20s Name: %-20s Phone #: %-20s", id, name, phoneNumber);
 	}
 
 	/**
