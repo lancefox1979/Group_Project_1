@@ -125,9 +125,9 @@ public class Store implements Serializable {
 				purchase = inventory.findWasher(brand, model, quantity);
 			}
 			while (customers.hasNext()) {
-				Customer temp = customers.next();
-				if (temp.matches(id)) {
-					customer = temp;
+				Customer nextCustomer = customers.next();
+				if (nextCustomer.matches(id)) {
+					customer = nextCustomer;
 				}
 			}
 			if (purchase) {
@@ -135,10 +135,10 @@ public class Store implements Serializable {
 				while (count != 0) {
 					Iterator<Washer> washers = washerList.iterator();
 					while (washers.hasNext()) {
-						Washer temp = washers.next();
-						if (temp.matches(washer.getBrand() + washer.getModel())) {
-							customer.purchase(temp);
-							totalSales += temp.getPrice();
+						Washer nextWasher = washers.next();
+						if (nextWasher.matches(washer.getBrand() + washer.getModel())) {
+							customer.purchase(nextWasher);
+							totalSales += nextWasher.getPrice();
 						}
 					}
 					count--;
