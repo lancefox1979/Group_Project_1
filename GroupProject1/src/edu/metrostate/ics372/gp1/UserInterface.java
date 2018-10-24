@@ -3,6 +3,7 @@ package edu.metrostate.ics372.gp1;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 /**
@@ -249,19 +250,28 @@ public class UserInterface {
 	 * this goes on back order.
 	 */
 	public void purchase() {
-		do {
-			String id = getToken("Enter customer id: ").toUpperCase().trim();
-			String brand = getToken("Enter washer brand: ").toUpperCase().trim();
-			String model = getToken("Enter washer model: ").toUpperCase().trim();
-			int quantity = getInteger("Enter quantity to purchase: ");
-			boolean purchased = store.purchaseWasher(id, brand, model, quantity);
-			if (purchased) {
-				System.out.println(
-						String.format("Customer: %s purchased %d of Brand: %s Model: %s", id, quantity, model, brand));
-			} else {
-				System.out.println("Purchase unsuccessful.");
-			}
-		} while (yesOrNo("Make another Purchase?"));
+		try {
+			do {
+				String id = getToken("Enter customer id: ").toUpperCase().trim();
+				String brand = getToken("Enter washer brand: ").toUpperCase().trim();
+				String model = getToken("Enter washer model: ").toUpperCase().trim();
+				if (store.isACustomer(id) && store.searchWashers(brand + model) != null) {
+					int quantity = getInteger("Enter quantity to purchase: ");
+					boolean purchased = store.purchaseWasher(id, brand, model, quantity);
+					if (purchased) {
+						System.out.println(String.format("Customer: %s purchased %d of Brand: %s Model: %s", id,
+								quantity, model, brand));
+					} else {
+						System.out.println("Purchase unsuccessful.");
+					}
+				} else {
+					throw new NoSuchElementException();
+				}
+			} while (yesOrNo("Make another Purchase?"));
+
+		} catch (NoSuchElementException e) {
+			System.out.println("Not a valid input. Returning to Main Menu...");
+		}
 	}
 
 	/**
