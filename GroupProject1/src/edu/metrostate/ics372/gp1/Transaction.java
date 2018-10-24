@@ -14,14 +14,9 @@ import java.util.GregorianCalendar;
  */
 public class Transaction implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private Customer customer;
-	private Washer washer;
+	private String type;
+	private String washerId;
 	private Calendar date;
-	private int quantitySold;
-	private int quantityDemanded;
-	private int backOrderQuantity;
-	private double amount;
-	private BackOrder backOrder;
 
 	/**
 	 * Creates the transaction with a given type and a washer ID. The date is
@@ -33,33 +28,29 @@ public class Transaction implements Serializable {
 	 *            the ID of the washer
 	 * 
 	 */
-	public Transaction(Customer customer, Washer washer, int quantity) {
-		this.customer = customer;
-		this.washer = washer;
-		this.quantityDemanded = quantity;
+	public Transaction(String type, String washerId) {
+		this.type = type;
+		this.washerId = washerId;
 		date = new GregorianCalendar();
 		date.setTimeInMillis(System.currentTimeMillis());
-		processTransaction();
 	}
 
-	private void processTransaction() {
-		while (quantityDemanded > 0) {
-			if (washer.getQuantity() == 0) {
-				backOrderQuantity++;
-				washer.setBackOrdered(true);
-			} else {
-				washer.reduceQuantity(1);
-				quantitySold++;
-			}
-			quantityDemanded--;
-		}
-		amount = quantitySold * washer.getPrice();
-		backOrder = new BackOrder(customer, backOrderQuantity);
-		washer.backOrderList.add(backOrder);
+	/**
+	 * Returns the type of transaction.
+	 * 
+	 * @return the type of transaction
+	 */
+	public String getType() {
+		return type;
 	}
 
-	public double getAmount() {
-		return amount;
+	/**
+	 * Returns the washer ID.
+	 * 
+	 * @return washer ID
+	 */
+	public String getWasherId() {
+		return washerId;
 	}
 
 	/**
@@ -77,9 +68,6 @@ public class Transaction implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return String.format(
-				"Customer %s bought %d of Brand %s Model %s for a total of $%.2f and a back order was placed on %d units.",
-				customer.getId(), quantitySold, washer.getBrand(), washer.getModel(), amount, backOrderQuantity);
-
+		return (type + "   " + washerId);
 	}
 }

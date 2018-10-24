@@ -1,7 +1,5 @@
 package edu.metrostate.ics372.gp1;
 
-import java.util.Iterator;
-
 /**
  * The WasherList class is used to maintain a collection of washers.
  * 
@@ -65,24 +63,5 @@ public class WasherList extends ItemList<Washer, String> {
 			}
 		}
 		return true;
-	}
-
-	/*
-	 * Returns the list of Washers for the clerk
-	 * 
-	 */
-	@Override
-	public String toString() {
-		StringBuilder stringBuilder = new StringBuilder();
-		Iterator<Washer> washers = this.iterator();
-		while (washers.hasNext()) {
-			Washer washer = washers.next();
-			stringBuilder.append(washer + "Quantity: " + washer.getQuantity() + "\n");
-		}
-		if (stringBuilder.length() > 0) {
-			return stringBuilder.toString();
-		} else {
-			return "No Washers Found";
-		}
 	}
 }
