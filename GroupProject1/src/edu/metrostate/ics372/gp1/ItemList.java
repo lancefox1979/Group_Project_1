@@ -30,7 +30,7 @@ public class ItemList<T extends IMatchable<K>, K> implements Serializable {
 	 */
 	public T search(K key) {
 		for (T item : list) {
-			if (item.matches(key)) {
+			if (item.matchesId(key)) {
 				return item;
 			}
 		}
@@ -72,5 +72,12 @@ public class ItemList<T extends IMatchable<K>, K> implements Serializable {
 	 */
 	public Iterator<T> iterator() {
 		return list.iterator();
+	}
+
+	/*
+	 * Returns the list
+	 */
+	public List<T> getList() {
+		return list;
 	}
 }

@@ -39,14 +39,33 @@ public class CustomerList extends ItemList<Customer, String> {
 	 * @return true if the customer could be inserted
 	 */
 	public boolean insertCustomer(Customer customer) {
-		return super.add(customer);
+		if (customerIsUnique(customer)) {
+			customer.setId();
+			return super.add(customer);
+		} else {
+			return false;
+		}
 	}
-	
+
+	/*
+	 * Tests to see if customer passed is unique in the list
+	 */
+	private boolean customerIsUnique(Customer customer) {
+		for (Customer person : getList()) {
+			if (customer.getName().equals(person.getName())
+					&& customer.getPhoneNumber().equals(person.getPhoneNumber())) {
+				System.out.println("Customer is already in database");
+				return false;
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * Finds a customer from the collection.
 	 * 
-	 * @param customer id
-	 *            the customer id be searched for
+	 * @param customer
+	 *            id the customer id be searched for
 	 * @return true if the customer was found
 	 */
 	public boolean findUser(String customerID, CustomerList list) {
@@ -64,6 +83,10 @@ public class CustomerList extends ItemList<Customer, String> {
 		while (customers.hasNext()) {
 			stringBuilder.append(customers.next() + "\n");
 		}
-		return stringBuilder.toString();
+		if (stringBuilder.length() > 0) {
+			return stringBuilder.toString();
+		} else {
+			return "No Customers Found";
+		}
 	}
 }

@@ -1,10 +1,8 @@
 package edu.metrostate.ics372.gp1;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Queue;
 
 /**
  * The Washer class is used to manage a single washer.
@@ -20,10 +18,12 @@ public class Washer implements Serializable, IMatchable<String> {
 	private String model;
 	private String id;
 	private double price;
-	private List<BackOrder> backOrders = new LinkedList<BackOrder>();
+	private int quantity;
+	private boolean isBackOrdered = false;
+	public Queue<BackOrder> backOrderList = new LinkedList<>();
 
 	/**
-	 * Represents a single washer.
+	 * Represents a single washer. ww
 	 * 
 	 * @param brand
 	 *            the washer's brand
@@ -36,6 +36,33 @@ public class Washer implements Serializable, IMatchable<String> {
 		this.brand = brand;
 		this.model = model;
 		this.id = brand + model;
+		this.setBackOrdered(true);
+		setPrice(price);
+
+	}
+
+	/*
+	 * Sets available quantity for this washer.
+	 */
+	public void updateQuantity(int quantity) {
+		this.quantity = getQuantity() + quantity;
+	}
+
+	public void reduceQuantity(int quantity) {
+		this.quantity = getQuantity() - quantity;
+	}
+
+	/*
+	 * returns the quantity of washers
+	 */
+	public int getQuantity() {
+		return this.quantity;
+	}
+
+	/*
+	 * Sets the price for the washer
+	 */
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -75,73 +102,8 @@ public class Washer implements Serializable, IMatchable<String> {
 		return price;
 	}
 
-	/**
-	 * Adds one back order to this washer.
-	 * 
-	 * @param backOrder
-	 *            the back order for this washer
-	 */
-	public void placeBackOrder(BackOrder backOrder) {
-		backOrders.add(backOrder);
-	}
-
-	/**
-	 * Removes a back order for a specific customer.
-	 * 
-	 * @param customerId
-	 *            customer whose back order is to be removed
-	 * @return true if the back order could be removed
-	 */
-	public boolean removeBackOrder(String customerId) {
-		for (ListIterator<BackOrder> iterator = backOrders.listIterator(); iterator.hasNext();) {
-			BackOrder backOrder = iterator.next();
-			String id = backOrder.getCustomer().getId();
-			if (id.equals(customerId)) {
-				iterator.remove();
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Returns a valid back order.
-	 * 
-	 * @return the next valid back order
-	 */
-	public BackOrder getNextBackOrder() {
-		for (ListIterator<BackOrder> iterator = backOrders.listIterator(); iterator.hasNext();) {
-			BackOrder backOrder = iterator.next();
-			iterator.remove();
-			return backOrder;
-		}
-		return null;
-	}
-
-	/**
-	 * Checks whether there is a back order on this washer.
-	 * 
-	 * @return true if there is a back order
-	 */
-	public boolean hasBackOrder() {
-		ListIterator<BackOrder> iterator = backOrders.listIterator();
-		if (iterator.hasNext()) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Returns an iterator for the back orders.
-	 * 
-	 * @return iterator for the back orders on this washer.
-	 */
-	public Iterator<BackOrder> getBackOrders() {
-		return backOrders.iterator();
-	}
-
 	@Override
-	public boolean matches(String key) {
+	public boolean matchesId(String key) {
 		if (this.id.equals(key)) {
 			return true;
 		} else {
@@ -155,6 +117,20 @@ public class Washer implements Serializable, IMatchable<String> {
 	 */
 	@Override
 	public String toString() {
-		return "Brand: " + brand + ", Model: " + model + ", Price: " + price;
+		return String.format("Brand: %-20s Model: %-20s Price: $%-20.2f", brand, model, price);
+	}
+
+	/*
+	 * Returns back order status
+	 */
+	public boolean isBackOrdered() {
+		return isBackOrdered;
+	}
+
+	/*
+	 * Sets the back order status
+	 */
+	public void setBackOrdered(boolean isBackOrdered) {
+		this.isBackOrdered = isBackOrdered;
 	}
 }

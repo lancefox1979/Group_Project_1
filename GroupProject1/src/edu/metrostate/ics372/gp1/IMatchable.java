@@ -19,5 +19,5 @@ public interface IMatchable<K> {
 	 *            the key value for matching
 	 * @return true if the item's key matches the given key
 	 */
-	public boolean matches(K key);
+	public boolean matchesId(K key);
 }
