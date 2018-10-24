@@ -27,7 +27,7 @@ public class Store implements Serializable {
 	private WasherList washerList;
 	private BackOrderList backOrderList;
 	private static Store store;
-	private double totalSales;
+	private double totalSales = 0.0;
 
 	/**
 	 * Private constructor using the singleton pattern. Creates the inventory,
@@ -106,7 +106,7 @@ public class Store implements Serializable {
 		Washer washer = searchWashers(brand + model);
 		boolean result = inventory.insertWasher(washer, quantity);
 		if (result) {
-			processBackOrders(washer.getId());
+			processBackOrders();
 		}
 		return result;
 	}
@@ -131,29 +131,22 @@ public class Store implements Serializable {
 				}
 			}
 			if (purchase) {
-				// I couldn't think of a way to get customer info and make a
-				// purchase from inventory so I just made it remove quantity
-				// from inv
 				int count = quantity;
-				while (customers.hasNext()) {
-					customer = customers.next();
-					if (customer.matches(id) && (count != 0)) {
-						Iterator<Washer> washers = washerList.iterator();
-						while (washers.hasNext()) {
-							washer = washers.next();
-							if (washer.matches(brand + model)) {
-								customer.purchase(washer);
-								totalSales += (washer.getPrice() * quantity);
-							}
+				while (count != 0) {
+					Iterator<Washer> washers = washerList.iterator();
+					while (washers.hasNext()) {
+						Washer temp = washers.next();
+						if (temp.matches(washer.getBrand() + washer.getModel())) {
+							customer.purchase(temp);
+							totalSales += temp.getPrice();
 						}
-						count--;
 					}
-				}
-				inventory.updateQuantity(brand, model, quantity);
-
+					count--;
+				}	
+				inventory.updateQuantity(washer.getBrand(), washer.getModel(), quantity);
 			} else {
 				if (addToBackOrder(customer, washer, quantity)) {
-					System.out.println("Not enough of " + brand + " " + model + " in stock. Back order placed.");
+					System.out.println("Not enough of " + brand + " " + model + " in stock. Back order placed for " + quantity + " units.");
 				} else {
 					System.out.println("The back order could not be placed.");
 				}
@@ -204,24 +197,37 @@ public class Store implements Serializable {
 	}
 
 	/**
-	 * Processes back orders for a single washer.
-	 * 
-	 * @param washerId
-	 *            id of the washer
-	 * @return the customer who should be notified the order has been fulfilled
+	 * Processes back orders for the store.
 	 */
-	public Customer processBackOrders(String washerId) {
-		Washer washer = inventory.search(washerId);
-		if (washer == null) {
-			return (null);
+	public void processBackOrders() {
+		Iterator<BackOrder> backOrderLog = backOrderList.iterator();
+		
+		while (backOrderLog.hasNext()) {
+			BackOrder backOrder = backOrderLog.next();
+			Customer customer = backOrder.getCustomer();
+			Washer washer = backOrder.getWasher();
+			int quantity = backOrder.getQuantity();
+			boolean purchase = inventory.findWasher(washer.getBrand(), washer.getModel(), quantity);
+			
+			if (purchase) {
+				double sale = 0.0;
+				int count = quantity;
+				while (count != 0) {
+					Iterator<Washer> washers = washerList.iterator();
+					while (washers.hasNext()) {
+						Washer temp = washers.next();
+						if (temp.matches(washer.getBrand() + washer.getModel())) {
+							customer.purchase(temp);
+							totalSales += temp.getPrice();
+							sale += temp.getPrice();
+						}
+					}
+					count--;
+				}	
+				inventory.updateQuantity(washer.getBrand(), washer.getModel(), quantity);
+				System.out.println("A backorder for " + customer.getId() + " has been processed for: " + String.format("$%.2f.%n", (float)sale));
+			}
 		}
-		BackOrder backOrder = washer.getNextBackOrder();
-		if (backOrder == null) {
-			return (null);
-		}
-		backOrder.getCustomer().removeBackOrder(washerId);
-		backOrder.getWasher().removeBackOrder(backOrder.getCustomer().getId());
-		return (backOrder.getCustomer());
 	}
 
 	/**

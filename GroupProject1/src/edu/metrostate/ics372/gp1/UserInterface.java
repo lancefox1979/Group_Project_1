@@ -299,7 +299,7 @@ public class UserInterface {
 	 * 
 	 */
 	public void displayTotal() {
-		System.out.println("Total sales: $" + store.getTotalSales());
+		System.out.println("Total sales: " + String.format("$%.2f.%n", (float) store.getTotalSales()));
 	}
 
 	/**
