@@ -33,9 +33,10 @@ public class UserInterface {
 	private String brand;
 	private String model;
 	private double price;
-	private String id;
+	private String customerId;
 	private String name;
 	private String phoneNumber;
+	private int quantity;
 
 	/**
 	 * Made private for the singleton pattern. Conditionally looks for any saved
@@ -72,11 +73,11 @@ public class UserInterface {
 	 */
 	public void addCustomer() {
 		do {
-			customer = store.addCustomer(getAndSetName(), getAndSetPhoneNumber());
-			if (customer == null) {
-				System.out.println("Could not add customer.");
+			customer = new Customer(getAndSetName(), getAndSetPhoneNumber());
+			if (store.addCustomer(customer)) {
+				System.out.println(customer + "has been added.");
 			} else {
-				System.out.println(customer + " has been added.");
+				System.out.println("Could not add customer");
 			}
 		} while (yesOrNo("Would you like to add another Customer?"));
 	}
@@ -89,9 +90,9 @@ public class UserInterface {
 	 */
 	public void addWasher() {
 		do {
-			washer = store.addWasher(getAndSetBrand(), getAndSetModel(), getAndSetPrice());
-			if (washer != null) {
-				System.out.println(washer);
+			washer = new Washer(getAndSetBrand(), getAndSetModel(), getAndSetPrice());
+			if (store.addWasher(washer)) {
+				System.out.println(washer + "has been added");
 			}
 		} while (yesOrNo("Would you like to add another washer?"));
 	}
@@ -109,14 +110,7 @@ public class UserInterface {
 				System.out.println("No such washer exists.");
 				return;
 			}
-			int quantity = getInteger("Enter quantity to add: ");
-			boolean result = store.addWasherToInventory(washer, quantity);
-			if (result) {
-				System.out.println("Added " + quantity + " of " + washer);
-			} else {
-				System.out.println("Washer could not be added to inventory.");
-			}
-
+			store.addWasherToInventory(washer, getAndSetQuantity());
 		} while (yesOrNo("Add more washers to the inventory?"));
 	}
 
@@ -134,23 +128,15 @@ public class UserInterface {
 	public void purchase() {
 		try {
 			do {
-				if (store.isACustomer(getAndSetId())
-						&& store.searchWashers(getAndSetBrand() + getAndSetModel()) != null) {
-					int quantity = getInteger("Enter quantity to purchase: ");
-					boolean purchased = store.purchaseWasher(id, brand, model, quantity);
-					if (purchased) {
-						System.out.println(String.format("Customer: %s purchased %d of Brand: %s Model: %s", id,
-								quantity, model, brand));
-					} else {
-						System.out.println("Purchase unsuccessful.");
-					}
+				if (store.isACustomer(getAndSetId()) && store.isAWasher(getAndSetBrand() + getAndSetModel())) {
+					store.purchaseWasher(customerId, brand, model, getAndSetQuantity());
 				} else {
 					throw new NoSuchElementException();
 				}
 			} while (yesOrNo("Make another Purchase?"));
 
 		} catch (NoSuchElementException e) {
-			System.out.println("Not a valid input. Returning to Main Menu...");
+			System.out.println("Invalid input, please check Customer ID, Washer Brand, or Washer Model...");
 		}
 	}
 
@@ -390,7 +376,7 @@ public class UserInterface {
 	 * Prompts clerk for Price
 	 */
 	private double getAndSetPrice() {
-		this.price = getDouble("Enter washer price: ");
+		this.price = getDouble("Enter washer price(in dollars): ");
 		return this.price;
 	}
 
@@ -398,8 +384,8 @@ public class UserInterface {
 	 * Prompts clerk for ID
 	 */
 	private String getAndSetId() {
-		this.id = getToken("Enter customer id: ").toUpperCase().trim();
-		return this.id;
+		this.customerId = getToken("Enter customer id: ").toUpperCase().trim();
+		return this.customerId;
 	}
 
 	/*
@@ -416,6 +402,15 @@ public class UserInterface {
 	private String getAndSetPhoneNumber() {
 		this.phoneNumber = getToken("Enter a Phone Number: ");
 		return this.phoneNumber;
+	}
+
+	private int getAndSetQuantity() {
+		this.quantity = getInteger("Enter quantity: ");
+		while (this.quantity <= 0) {
+			System.out.println("Please enter a positive Quanitity");
+			getAndSetQuantity();
+		}
+		return this.quantity;
 	}
 
 	/**
