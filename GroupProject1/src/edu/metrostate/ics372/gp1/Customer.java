@@ -3,6 +3,7 @@ package edu.metrostate.ics372.gp1;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * The Customer class is used to manage a single customer.
@@ -19,6 +20,7 @@ public class Customer implements Serializable, IMatchable<String> {
 	private String phoneNumber;
 	private String id;
 	private List<Washer> washersSold = new LinkedList<Washer>();
+	private List<BackOrder> washersOnBackOrder = new LinkedList<BackOrder>();
 	private List<Transaction> transactions = new LinkedList<Transaction>();
 
 	/**
@@ -32,6 +34,7 @@ public class Customer implements Serializable, IMatchable<String> {
 	public Customer(String name, String phoneNumber) {
 		this.name = name;
 		this.phoneNumber = phoneNumber;
+		id = MEMBER_STRING + (CustomerIdServer.instance()).getId();
 	}
 
 	/**
@@ -59,10 +62,6 @@ public class Customer implements Serializable, IMatchable<String> {
 	 */
 	public String getId() {
 		return id;
-	}
-
-	public void setId() {
-		id = MEMBER_STRING + (CustomerIdServer.instance()).getId();
 	}
 
 	/**
@@ -100,8 +99,39 @@ public class Customer implements Serializable, IMatchable<String> {
 		return false;
 	}
 
+	/**
+	 * Places a back order for the washer.
+	 * 
+	 * @param hold
+	 *            the washer to be placed on back order
+	 */
+	public void placeBackOrder(BackOrder backOrder) {
+		transactions.add(new Transaction("Back order placed: ", backOrder.getWasher().getId()));
+		washersOnBackOrder.add(backOrder);
+	}
+
+	/**
+	 * Removes a back order.
+	 * 
+	 * @param washerId
+	 *            the washer ID for removing a back order
+	 * @return true if the back order could be removed
+	 */
+	public boolean removeBackOrder(String washerId) {
+		for (ListIterator<BackOrder> iterator = washersOnBackOrder.listIterator(); iterator.hasNext();) {
+			BackOrder backOrder = (BackOrder) iterator.next();
+			String id = backOrder.getWasher().getId();
+			if (id.equals(washerId)) {
+				transactions.add(new Transaction("Back order removed: ", backOrder.getWasher().getId()));
+				iterator.remove();
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
-	public boolean matchesId(String key) {
+	public boolean matches(String key) {
 		if (this.id.equals(key)) {
 			return true;
 		} else {
@@ -115,7 +145,7 @@ public class Customer implements Serializable, IMatchable<String> {
 	 */
 	@Override
 	public String toString() {
-		return String.format("Customer ID: %-20s Name: %-20s Phone #: %-20s", id, name, phoneNumber);
+		return "Customer name: " + name + ", phone number: " + phoneNumber + ", ID: " + id + ".";
 	}
 
 	/**
